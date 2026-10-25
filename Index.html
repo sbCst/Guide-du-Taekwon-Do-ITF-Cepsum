@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide ITF - 25 Formes</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --panel: #101d30;
+      --panel-2: #13253b;
+      --line: #2b3d55;
+      --gold: #e9b949;
+      --text: #eef4ff;
+      --muted: #a9b7c9;
+      --blue: #7dd3fc;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+      background: linear-gradient(160deg, #07101c, #0b1728 60%, #111e30);
+      color: var(--text);
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: #0a1423;
+      padding: 32px 16px 24px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      color: var(--gold);
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: 0.04em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      max-width: 850px;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11, 23, 40, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 16px;
+    }
+
+    .controls {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .controls input,
+    .controls select {
+      flex: 1;
+      min-width: 180px;
+      background: var(--panel);
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 12px;
+      font: inherit;
+    }
+
+    .count {
+      color: var(--muted);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    main {
+      padding: 24px 16px 60px;
+    }
+
+    .forms {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+      gap: 16px;
+    }
+
+    .form {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: linear-gradient(160deg, var(--panel), #0e1929);
+      overflow: hidden;
+    }
+
+    details[open] summary {
+      background: rgba(255,255,255,0.02);
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 18px 16px;
+      transition: background 0.2s ease;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    .summary-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .form-num {
+      color: var(--gold);
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      font-size: 0.8rem;
+    }
+
+    .form-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .ready {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .pill {
+      white-space: nowrap;
+      background: var(--gold);
+      color: #09111c;
+      padding: 5px 10px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      border-radius: 999px;
+    }
+
+    .body {
+      padding: 0 18px 18px;
+      border-top: 1px solid #253650;
+    }
+
+    .movement {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 10px;
+      padding: 12px 0;
+      border-top: 1px solid #21334a;
+    }
+
+    .movement:first-child {
+      border-top: none;
+    }
+
+    .n {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: #21324a;
+      color: var(--gold);
+      font-weight: 800;
+      font-size: 0.8rem;
+    }
+
+    .move-text {
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    .ko {
+      color: var(--blue);
+      font-size: 0.8rem;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .empty {
+      display: none;
+      padding: 30px 20px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      margin-top: 18px;
+      background: rgba(16,29,48,0.4);
+    }
+
+    .source {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+
+    @media (max-width: 520px) {
+      .movement {
+        grid-template-columns: 30px 1fr;
+      }
+
+      .controls input,
+      .controls select {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>GUIDE TECHNIQUE ITF</h1>
+      <p class="subtitle">
+        Référentiel consultable des formes ITF, avec les séquences de mouvement et la terminologie coréenne.
+      </p>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="controls">
+      <input id="search" type="search" placeholder="Rechercher une forme, un mouvement ou un terme coréen..." />
+      <select id="filter">
+        <option value="all">Toutes les formes</option>
+        <option value="color">Ceintures couleur</option>
+        <option value="black">Ceintures noires</option>
+      </select>
+      <select id="sort">
+        <option value="source">Ordre du document</option>
+        <option value="alpha">Ordre alphabétique</option>
+        <option value="moves">Nombre de mouvements</option>
+      </select>
+      <span id="count" class="count"></span>
+    </div>
+  </div>
+
+  <main class="container">
+    <div id="forms" class="forms"></div>
+    <div id="empty" class="empty">Aucun mouvement ne correspond à la recherche.</div>
+
+    <div class="source">
+      Source : extrait de documentation ITF / pdf de séquences. Vérifiez toujours la source officielle de votre fédération ou instructeur.
+    </div>
+  </main>
+
+  <script>
+    const patterns = [
+      {
+        name: "CHON-JI",
+        group: "color",
+        ready: "Parallel Ready Stance",
+        moves: [
+          { n: 1, text: "Move the left foot to B forming a left walking stance toward B while executing a low block to B with the left forearm.", ko: "Gunnun so palmok najunde makgi" },
+          { n: 2, text: "Move the right foot to B forming a right walking stance toward B while executing a middle punch to B with the right fist.", ko: "Gunnun so kaunde jirugi" },
+          { n: 3, text: "Move the right foot to A, turning clockwise to form a right walking stance toward A while executing a low block to A with the right forearm.", ko: "Gunnun so palmok najunde makgi" },
+          { n: 4, text: "Move the left foot to A forming a left walking stance toward A while executing a middle punch to A with the left fist.", ko: "Gunnun so kaunde jirugi" },
+          { n: 5, text: "Move the left foot to D forming a left walking stance toward D while executing a low block to D with the left forearm.", ko: "Gunnun so palmok najunde makgi" },
+          { n: 6, text: "Move the right foot to D forming a right walking stance toward D while executing a middle punch to D with the right fist.", ko: "Gunnun so kaunde jirugi" }
+        ]
+      },
+      {
+        name: "DAN-GUN",
+        group: "color",
+        ready: "Parallel Ready Stance",
+        moves: [
+          { n: 1, text: "Move the left foot to B forming a right L-stance toward B, at the same time executing a middle guarding block to B with a knife-hand.", ko: "Niunja so sonkal kaunde daebi makgi" },
+          { n: 2, text: "Move the right foot to B forming a right walking stance toward B while executing a high punch to B with the right fist.", ko: "Gunnun so nopunde jirugi" },
+          { n: 3, text: "Move the right foot to A turning clockwise to form a left L-stance toward A, at the same time executing a middle guarding block to A with a knife-hand.", ko: "Niunja so sonkal kaunde daebi makgi" },
+          { n: 4, text: "Move the left foot to A forming a left walking stance toward A while executing a high punch to A with the left fist.", ko: "Gunnun so nopunde jirugi" }
+        ]
+      },
+      {
+        name: "DO-SAN",
+        group: "color",
+        ready: "Parallel Ready Stance",
+        moves: [
+          { n: 1, text: "Move the left foot to B, forming a left walking stance toward B while executing a high side block to B with the left outer forearm.", ko: "Gunnun so bakat palmok nopunde yop makgi" },
+          { n: 2, text: "Execute a middle punch to B with the right fist while maintaining a left walking stance toward B.", ko: "Gunnun so kaunde bandae jirugi" },
+          { n: 3, text: "Move the left foot on line AB, and then turn clockwise to form a right walking stance toward A while executing a high side block to A with the right outer forearm.", ko: "Gunnun so bakat palmok nopunde yop makgi" }
+        ]
+      },
+      {
+        name: "WON-HYO",
+        group: "color",
+        ready: "Close Ready Stance A",
+        moves: [
+          { n: 1, text: "Move the left foot to B forming a right L-stance toward B while executing a twin forearm block.", ko: "Niunja so sang palmok makgi" },
+          { n: 2, text: "Execute a high inward strike to B with the right knife-hand while bringing the left side fist in front of the right shoulder, maintaining a right L-stance toward B.", ko: "Niunja so sonkal nopunde anuro taerigi" },
+          { n: 3, text: "Execute a middle punch to B with the left fist while forming a left fixed stance toward B, slipping the left foot to B.", ko: "Gojung so kaunde yop jirugi" }
+        ]
+      },
+      {
+        name: "YUL-GOK",
+        group: "color",
+        ready: "Parallel Ready Stance",
+        moves: [
+          { n: 1, text: "Move the left foot to B forming a sitting stance toward D while extending the left fist to D horizontally.", ko: "Annun sogi" },
+          { n: 2, text: "Execute a middle punch to D with the right fist while maintaining a sitting stance toward D.", ko: "Annun so orun joomuk kaunde ap jirugi" },
+          { n: 3, text: "Execute a middle punch to D with the left fist while maintaining a sitting stance toward D.", ko: "Annun so wen joomuk kaunde ap jirugi" }
+        ]
+      },
+      {
+        name: "JOONG-GUN",
+        group: "color",
+        ready: "Close Ready Stance B",
+        moves: [
+          { n: 1, text: "Move the left foot to B forming a right L-stance toward B while executing a middle block to B with the left reverse knife-hand.", ko: "Niunja so sonkal dung kaunde makgi" },
+          { n: 2, text: "Execute a low side front snap kick to B with the left foot, keeping the position of the hands as they were in 1.", ko: "Najunde yobap cha busigi" },
+          { n: 3, text: "Lower the left foot to B and then move the right foot to B forming a left rear foot stance toward B while executing an upward block with a right palm.", ko: "Dwitbal so sonbadak bandae ollyo makgi" }
+        ]
+      },
+      {
+        name: "TOI-GYE",
+        group: "color",
+        ready: "Close Ready Stance B",
+        moves: [
+          { n: 1, text: "Move the left foot to B forming a right L-stance toward B while executing a middle block to B with the left inner forearm.", ko: "Niunja so anpalmok kaunde makgi" },
+          { n: 2, text: "Execute a low thrust to B with the right upset finger tip while forming a left walking stance toward B, slipping the left foot to B.", ko: "Gunnun so dwijibun sonkut najunde tulgi" }
+        ]
+      },
+      {
+        name: "HWA-RANG",
+        group: "color",
+        ready: "Close Ready Stance C",
+        moves: [
+          { n: 1, text: "Move the left foot to B to form a sitting stance toward D while executing a middle pushing block to D with the left palm.", ko: "Annun so wen sonbadak kaunde yobap miro makgi" },
+          { n: 2, text: "Execute a middle punch to D with the right fist while maintaining a sitting stance toward D.", ko: "Annun so orun joomuk kaunde ap jirugi" }
+        ]
+      },
+      {
+        name: "CHOONG-MOO",
+        group: "color",
+        ready: "Parallel Ready Stance",
+        moves: [
+          { n: 1, text: "Move the left foot to B forming a right L-stance toward B while executing a twin knife-hand block.", ko: "Niunja so sang sonkal makgi" },
+          { n: 2, text: "Move the right foot to B forming a right walking stance toward B while executing a high front strike to B with the right knife-hand and bring the left back hand in front of the forehead.", ko: "Gunnun so sonkal nopunde ap taerigi" }
+        ]
+      },
+      {
+        name: "KWANG-GAE",
+        group: "black",
+        ready: "Parallel Stance with a Heaven Hand",
+        moves: [
+          { n: 1, text: "Bring the left foot to the right foot, forming a close ready stance B toward D, bringing both hands in a circular motion.", ko: "Moa junbi sogi B" },
+          { n: 2, text: "Move the left foot to D, forming a left walking stance toward D while executing an upset punch to D with the right fist.", ko: "Gunnun so bandae dwijibo jirugi" }
+        ]
+      }
+    ];
+
+    const formEl = document.getElementById('forms');
+    const searchEl = document.getElementById('search');
+    const filterEl = document.getElementById('filter');
+    const sortEl = document.getElementById('sort');
+    const countEl = document.getElementById('count');
+    const emptyEl = document.getElementById('empty');
+
+    function getVisiblePatterns() {
+      const query = searchEl.value.trim().toLowerCase();
+      const filter = filterEl.value;
+      let list = [...patterns];
+
+      list = list.filter(p => {
+        const matchFilter = filter === 'all' || p.group === filter;
+        const matchQuery =
+          !query ||
+          p.name.toLowerCase().includes(query) ||
+          p.ready.toLowerCase().includes(query) ||
+          p.moves.some(m =>
+            m.text.toLowerCase().includes(query) ||
+            m.ko.toLowerCase().includes(query)
+          );
+
+        return matchFilter && matchQuery;
+      });
+
+      const sort = sortEl.value;
+      if (sort === 'alpha') {
+        list.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (sort === 'moves') {
+        list.sort((a, b) => b.moves.length - a.moves.length);
+      } else {
+        list.sort((a, b) => patterns.indexOf(a) - patterns.indexOf(b));
+      }
+
+      return list;
+    }
+
+    function renderForms() {
+      const list = getVisiblePatterns();
+      formEl.innerHTML = '';
+
+      if (!list.length) {
+        emptyEl.style.display = 'block';
+        countEl.textContent = '0 forme(s)';
+        return;
+      }
+
+      emptyEl.style.display = 'none';
+      countEl.textContent = `${list.length} forme(s)`;
+
+      list.forEach((pattern, index) => {
+        const details = document.createElement('details');
+        details.className = 'form';
+        details.open = index === 0;
+
+        details.innerHTML = `
+          <summary>
+            <div class="summary-left">
+              <span class="form-num">${pattern.name}</span>
+              <span class="ready">${pattern.ready}</span>
+            </div>
+            <span class="pill">${pattern.moves.length} mouvements</span>
+          </summary>
+          <div class="body">
+            ${pattern.moves.map(move => `
+              <div class="movement">
+                <div class="n">${move.n}</div>
+                <div class="move-text">
+                  ${move.text}
+                  <span class="ko">(${move.ko})</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        formEl.appendChild(details);
+      });
+    }
+
+    searchEl.addEventListener('input', renderForms);
+    filterEl.addEventListener('change', renderForms);
+    sortEl.addEventListener('change', renderForms);
+
+    renderForms();
+  </script>
+</body>
+</html>
