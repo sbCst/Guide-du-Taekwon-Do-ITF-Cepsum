@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITF Taekwon-Do - Guide Technique & Référentiel Officiel</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Cinzel', 'serif']
+                    },
+                    colors: {
+                        itf: {
+                            blue: '#003865',
+                            accent: '#00529B',
+                            gold: '#D4AF37',
+                            goldHover: '#B89528',
+                            red: '#C8102E',
+                            darkBg: '#0B132B',
+                            darkCard: '#1C2541',
+                            darkHeader: '#070A13'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0b132b; }
+        ::-webkit-scrollbar-thumb { background: #00529b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
+        
+        .source-crop-container {
+            width: 100%;
+            height: 95px;
+            overflow: hidden;
+            position: relative;
+            background: #020617;
+            border-radius: 0.5rem;
+            border: 1px solid #1e293b;
+        }
+        .source-crop-img {
+            position: absolute;
+            max-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-itf-gold selection:text-itf-darkBg">
+
+    <!-- Header & Navigation Bar -->
+    <header class="bg-itf-darkHeader border-b border-itf-gold/30 sticky top-0 z-50 shadow-2xl backdrop-blur-md bg-opacity-95">
+        <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-4">
+                
+                <!-- Brand Title & Navigation Views -->
+                <div class="flex flex-col xl:flex-row items-center gap-4 w-full lg:w-auto justify-between lg:justify-start">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-itf-gold to-yellow-600 flex items-center justify-center text-slate-950 font-serif font-black text-2xl shadow-lg border border-amber-200 shrink-0">
+                            武
+                        </div>
+                        <div>
+                            <h1 class="text-xl sm:text-2xl font-serif font-bold tracking-wider text-white flex items-center gap-2">
+                                GUIDE TECHNIQUE ITF
+                            </h1>
+                            <p class="text-xs text-slate-400 font-medium">Les formes et la science : précision technique et biomécanique appliquée</p>
+                        </div>
+                    </div>
+
+                    <!-- Main App View Switcher Tabs -->
+                    <div class="flex flex-wrap bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs gap-1">
+                        <button id="nav-tuls" onclick="switchView('tuls')" class="px-3 py-2 rounded-lg font-bold bg-itf-gold text-slate-950 transition shadow">
+                            <i class="fa-solid fa-scroll mr-1"></i> Formes (25)
+                        </button>
+                        <button id="nav-postures" onclick="switchView('postures')" class="px-3 py-2 rounded-lg font-semibold text-slate-300 hover:text-white transition">
+                            <i class="fa-solid fa-shoe-prints mr-1"></i> Postures
+                        </button>
+                        <button id="nav-science" onclick="switchView('science')" class="px-3 py-2 rounded-lg font-semibold text-slate-300 hover:text-white transition">
+                            <i class="fa-solid fa-atom mr-1"></i> Science
+                        </button>
+                        <button id="nav-secrets" onclick="switchView('secrets')" class="px-3 py-2 rounded-lg font-semibold text-slate-300 hover:text-white transition">
+                            <i class="fa-solid fa-book-open mr-1"></i> Secrets
+                        </button>
+                        <button id="nav-power" onclick="switchView('power')" class="px-3 py-2 rounded-lg font-semibold text-slate-300 hover:text-white transition">
+                            <i class="fa-solid fa-bolt mr-1"></i> Puissance
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex-1 w-full space-y-6">
+
+        <!-- VIEW 1: TULS & MOVEMENTS -->
+        <div id="view-tuls" class="space-y-6">
+            <div class="bg-itf-darkCard p-5 rounded-2xl border border-slate-700/80 shadow-xl space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-lg font-bold font-serif text-white flex items-center gap-2">
+                            <i class="fa-solid fa-scroll text-itf-gold"></i> Sélectionner un Tul (Forme)
+                        </h2>
+                        <p class="text-xs text-slate-400">Référentiel officiel complet des 25 formes (Encyclopédie de General Choi Hong Hi)[span_0](start_span)[span_0](end_span).</p>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <button data-group="all" class="group-btn active px-3 py-1.5 rounded-lg bg-itf-gold text-slate-950 font-bold transition">Tous (25)</button>
+                        <button data-group="color" class="group-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 font-semibold hover:bg-slate-700 transition">Ceintures Couleur (9)</button>
+                        <button data-group="black" class="group-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 font-semibold hover:bg-slate-700 transition">Ceintures Noires (16)</button>
+                    </div>
+                </div>
+
+                <div id="tul-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5"></div>
+            </div>
+
+            <div id="active-tul-banner" class="bg-gradient-to-r from-itf-accent/30 via-slate-800 to-itf-darkCard p-5 rounded-2xl border border-itf-accent/50 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <div class="flex items-center gap-3">
+                        <span id="tul-badge" class="px-2.5 py-1 rounded-md bg-itf-gold text-slate-950 font-black text-xs font-serif">1er Tul</span>
+                        <h2 id="tul-title" class="text-2xl font-serif font-bold text-white">CHON-JI</h2>
+                    </div>
+                    <p id="tul-description" class="text-xs text-slate-300 mt-1 max-w-2xl">Signifie littéralement 'le Ciel et la Terre'. Représente la création du monde et le début de l'histoire humaine.</p>
+                </div>
+
+                <div class="flex items-center gap-4 text-xs shrink-0 bg-slate-950/40 p-3 rounded-xl border border-slate-800">
+                    <div class="text-center">
+                        <span class="block text-slate-400 text-[10px] uppercase">Mouvements</span>
+                        <strong id="tul-mov-count" class="text-itf-gold text-base font-serif">19</strong>
+                    </div>
+                    <div class="w-px h-8 bg-slate-800"></div>
+                    <div class="text-center">
+                        <span class="block text-slate-400 text-[10px] uppercase">Diagramme</span>
+                        <strong id="tul-diagram" class="text-slate-200 text-base font-serif">+</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-itf-darkCard p-4 rounded-2xl border border-slate-700/80 shadow-xl flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="relative w-full sm:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="search-input" placeholder="Chercher dans ce Tul (mouvement, technique)..." oninput="handleSearch(this.value)"
+                        class="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-itf-gold transition">
+                </div>
+
+                <div class="flex items-center gap-2 self-end sm:self-center shrink-0 text-xs">
+                    <button id="expand-all-btn" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-xl font-semibold transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-angles-down text-itf-gold"></i> Tout déplier
+                    </button>
+                    <button id="collapse-all-btn" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-xl font-semibold transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-angles-up text-itf-gold"></i> Tout replier
+                    </button>
+                </div>
+            </div>
+
+            <div id="movements-list" class="space-y-3.5"></div>
+        </div>
+
+        <!-- VIEW 2: POSTURES DIRECTORY (SOGI) -->
+        <div id="view-postures" class="hidden space-y-6">
+            <div class="bg-itf-darkCard p-6 rounded-2xl border border-slate-700/80 shadow-xl space-y-3">
+                <h2 class="text-xl font-serif font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-shoe-prints text-itf-gold"></i> Répertoire Officiel des Postures (*Sogi*)
+                </h2>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    Référentiel géométrique complet des postures officielles du Taekwon-Do ITF issu de la source originale : dimensions, angles d'orientation des pieds et répartition de la charge pondérale[span_1](start_span)[span_1](end_span).
+                </p>
+                <div class="relative w-full sm:w-80 pt-2">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="posture-search" placeholder="Filtrer une posture..." oninput="filterPostures(this.value)"
+                        class="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-itf-gold transition">
+                </div>
+            </div>
+
+            <div id="postures-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </div>
+
+        <!-- VIEW 3: SCIENTIFIC APPLICATION -->
+        <div id="view-science" class="hidden space-y-6">
+            <div class="bg-itf-darkCard p-6 rounded-2xl border border-slate-700/80 shadow-xl space-y-3">
+                <h2 class="text-xl font-serif font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-atom text-itf-gold"></i> Application Scientifique & Lois Physiques
+                </h2>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    Distinction rigoureuse entre la théorie traditionnelle formulée par le Général Choi Hong Hi et la biomécanique moderne documentée[span_2](start_span)[span_2](end_span).
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-itf-darkCard p-6 rounded-2xl border border-slate-700/80 shadow-xl flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-itf-blue border border-itf-accent flex items-center justify-center text-itf-gold text-lg mb-3 shadow">
+                            <i class="fa-solid fa-compress"></i>
+                        </div>
+                        <h3 class="font-bold font-serif text-white text-base">La Pression (Pressure)</h3>
+                        <div class="my-3 p-3 bg-slate-900 rounded-xl border border-slate-800 text-center font-mono text-lg text-itf-gold">
+                            P = F / S
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            La force concentrée sur une surface impacte d'autant plus lourdement la cible que la surface de contact ($S$) est réduite.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-itf-darkCard p-6 rounded-2xl border border-slate-700/80 shadow-xl flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-itf-blue border border-itf-accent flex items-center justify-center text-itf-gold text-lg mb-3 shadow">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <h3 class="font-bold font-serif text-white text-base">Énergie Cinétique</h3>
+                        <div class="my-3 p-3 bg-slate-900 rounded-xl border border-slate-800 text-center font-mono text-lg text-itf-gold">
+                            E<sub>k</sub> = ½ m · v<sup>2</sup>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            La vitesse ($v$) joue un rôle exponentiel dans la puissance d'impact comparativement à la masse ($m$).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-itf-darkCard p-6 rounded-2xl border border-slate-700/80 shadow-xl flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-itf-blue border border-itf-accent flex items-center justify-center text-itf-gold text-lg mb-3 shadow">
+                            <i class="fa-solid fa-mountain"></i>
+                        </div>
+                        <h3 class="font-bold font-serif text-white text-base">Énergie Potentielle</h3>
+                        <div class="my-3 p-3 bg-slate-900 rounded-xl border border-slate-800 text-center font-mono text-lg text-itf-gold">
+                            PE = m · g · h
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Exploitation de la Vague Sinusoïdale : l'élévation du centre de gravité ($h$) crée une réserve d'énergie convertie en force cinétique.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 4: SECRETS OF TRAINING -->
+        <div id="view-secrets" class="hidden space-y-6">
+            <div class="bg-itf-darkCard p-6 rounded-2xl border border-slate-700/80 shadow-xl space-y-3">
+                <h2 class="text-xl font-serif font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-book-open text-itf-gold"></i> Les secrets de l'entraînement
+                </h2>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    Principes fondamentaux dictés par l'Encyclopédie ITF pour devenir un véritable expert et progresser avec justesse[span_3](start_span)[span_3](end_span).
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="bg-itf-darkCard p-5 rounded-xl border border-slate-800 space-y-2">
+                    <strong class="text-itf-gold block text-sm font-serif">1. Étudier la théorie à fond</strong>
+                    <p class="text-slate-300 leading-relaxed">Comprendre le « pourquoi » et le « comment » de chaque mouvement. La pratique sans la théorie est aveugle.</p>
+                </div>
+                <div class="bg-itf-darkCard p-5 rounded-xl border border-slate-800 space-y-2">
+                    <strong class="text-itf-gold block text-sm font-serif">2. Ne jamais négliger les mouvements fondamentaux</strong>
+                    <p class="text-slate-300 leading-relaxed">Les bases (*Gibon Undong*) sont indispensables ; les abandonner conduit à la perte de l'ancrage technique.</p>
+                </div>
+                <div class="bg-itf-darkCard p-5 rounded-xl border border-slate-800 space-y-2">
+                    <strong class="text-itf-gold block text-sm font-serif">3. Connaître l'objectif et la finalité de chaque mouvement</strong>
+                    <p class="text-slate-300 leading-relaxed">Savoir précisément l'application martiale ou biomécanique exacte cachée derrière chaque technique.</p>
+                </div>
+                <div class="bg-itf-darkCard p-5 rounded-xl border border-slate-800 space-y-2">
+                    <strong class="text-itf-gold block text-sm font-serif">4. Pratiquer régulièrement chez soi et au dojang</strong>
+                    <p class="text-slate-300 leading-relaxed">La constance et la répétition fixent la mémoire musculaire et la structure corporelle.</p>
+                </div>
+                <div class="bg-itf-darkCard p-5 rounded-xl border border-slate-800 space-y-2">
+                    <strong class="text-itf-gold block text-sm font-serif">5. Intégrer l'aspect scientifique</strong>
+                    <p class="text-slate-300 leading-relaxed">Réaliser que l'efficacité repose sur l'application de la physique et de l'angulation plutôt que sur la force brute.</p>
+                </div>
+                <div class="bg-itf-darkCard p-5 rounded-xl border border-slate-800 space-y-2">
+                    <strong class="text-itf-gold block text-sm font-serif">6. Respecter l'étiquette et la modestie</strong>
+                    <p class="text-slate-300 leading-relaxed">Appliquer les principes moraux (courtoisie, intégrité, persévérance, maîtrise de soi, esprit indomptable).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 5: THEORY OF POWER -->
+        <div id="view-power" class="hidden space-y-6">
+            <div class="bg-itf-darkCard p-6 rounded-2xl border border-slate-700/80 shadow-xl space-y-3">
+                <h2 class="text-xl font-serif font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-itf-gold"></i> La théorie de la puissance (*Him Ui Wolli*)
+                </h2>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    Selon le Général Choi Hong Hi, la puissance dévastatrice d'un coup repose sur la combinaison rigoureuse de 6 facteurs clés :
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                <div class="bg-itf-darkCard p-5 rounded-xl border border-slate-800 space-y-2">
+                    <strong class="text-amber-400 block text-sm font-serif">1. La force de réaction</strong>
+                    <p class="text-slate-300 leading-relaxed">Action et réaction (3e loi de Newton) : reculer ou armer le poing opposé à la hanche pour amplifier l'impact.</p>
+                </div>
+                <div class="bg-itf-darkCard p-5 rounded-xl border border-slate-800 space-y-2">
+                    <strong class="text-amber-400 block text-sm font-serif">2. La concentration</strong>
+                    <p class="text-slate-300 leading-relaxed">Focaliser la force sur la plus petite surface de contact possible, maximisant ainsi la pression ($P = F/S$).</p>
+                </div>
+                <div class="bg-itf-darkCard p-5 rounded-xl border border-slate-800 space-y-2">
+                    <strong class="text-amber-400 block text-sm font-serif">3. L'équilibre</strong>
+                    <p class="text-slate-300 leading-relaxed">Stabilité statique et dynamique irréprochable via une structure de pieds adéquate et l'ancrage du talon arrière.</p>
+                </div>
+                <div class="bg-itf-darkCard p-5 rounded-xl border border-slate-800 space-y-2">
+                    <strong class="text-amber-400 block text-sm font-serif">4. Le contrôle de la respiration</strong>
+                    <p class="text-slate-300 leading-relaxed">Expiration contrôlée à l'impact pour contracter les abdominaux, se protéger et focaliser l'énergie.</p>
+                </div>
+                <div class="bg-itf-darkCard p-5 rounded-xl border border-slate-800 space-y-2">
+                    <strong class="text-amber-400 block text-sm font-serif">5. La masse corporelle</strong>
+                    <p class="text-slate-300 leading-relaxed">Exploitation du poids du corps par la rotation des hanches et la vague sinusoïdale (*Sine Wave*).</p>
+                </div>
+                <div class="bg-itf-darkCard p-5 rounded-xl border border-slate-800 space-y-2">
+                    <strong class="text-amber-400 block text-sm font-serif">6. La vitesse et l'accélération</strong>
+                    <p class="text-slate-300 leading-relaxed">Facteur le plus critique ($E_k = \frac{1}{2}mv^2$) obtenu par la relaxation musculaire puis la contraction instantanée.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Script Data & Logic -->
+    <script>
+        const posturesDatabase = [
+            { name: "Posture d'attention (Charyot Sogi)", desc: "Talons joints, les orteils forment un angle de 45 degrés.", weight: "50% / 50%", dims: "Talons collés, angle 45°", cropStyle: "top: 15px; left: 350px; transform: scale(2.5);" },
+            { name: "Posture de préparation parallèle (Narani Junbi Sogi)", desc: "Pieds séparés d'une largeur d'épaule entre les bords intérieurs, pieds parallèles.", weight: "50% / 50%", dims: "1 largeur d'épaule (intérieur)", cropStyle: "top: 300px; left: 450px; transform: scale(2.2);" },
+            { name: "Posture assise (Annun Sogi)", desc: "Largeur d'1,5 largeur d'épaule entre les bords intérieurs des pieds. Pieds parallèles pointant vers l'avant.", weight: "50% / 50%", dims: "Largeur 1,5 épaule (intérieur)", cropStyle: "top: 100px; left: 450px; transform: scale(2.2);" },
+            { name: "Posture d'attente rapprochée (Moa Junbi Sogi)", desc: "Pieds joints sur toute leur longueur (talons et orteils collés).", weight: "50% / 50%", dims: "Pieds entièrement joints", cropStyle: "top: 15px; left: 600px; transform: scale(2.5);" },
+            { name: "Posture fixe (Gojung Sogi)", desc: "Longueur d'1,5 largeur d'épaule entre les gros orteils. Pieds inclinés de 15° vers l'intérieur.", weight: "50% / 50%", dims: "Longueur 1,5 épaule (orteil à orteil)", cropStyle: "top: 250px; left: 200px; transform: scale(2.2);" },
+            { name: "Posture verticale (Soo Jik Sogi)", desc: "Espacement d'1 largeur d'épaule entre les gros orteils, jambes tendues, pieds rentrés à 15°.", weight: "60% arrière / 40% avant", dims: "Largeur 1 épaule", cropStyle: "top: 250px; left: 50px; transform: scale(2.2);" },
+            { name: "Posture en L (Niunja Sogi)", desc: "Longueur d'1,5 largeur d'épaule du tranchant arrière aux orteils avant. Talons décalés de 2,5 cm, pieds rentrés à 15°.", weight: "70% arrière / 30% avant", dims: "Longueur 1,5 épaule | Décalage 2,5 cm", cropStyle: "top: 350px; left: 650px; transform: scale(2.2);" },
+            { name: "Posture sur le pied arrière (Dwitbal Sogi)", desc: "Longueur d'1 largeur d'épaule entre les pieds. Talon avant légèrement décollé (2,5 cm).", weight: "95% arrière / 5% avant", dims: "Longueur 1 largeur d'épaule", cropStyle: "top: 380px; left: 800px; transform: scale(2.2);" },
+            { name: "Posture diagonale (Sasun Sogi)", desc: "Similaire à une posture en L mais orientée en diagonale avec angles spécifiques.", weight: "50% / 50%", dims: "Orientation diagonale", cropStyle: "top: 600px; left: 100px; transform: scale(2.2);" },
+            { name: "Posture de marche (Gunnun Sogi)", desc: "Largeur d'une largeur d'épaule (intérieur des pieds) et longueur d'1,5 largeur d'épaule (d'orteil à orteil). Pied arrière à 25°.", weight: "50% / 50%", dims: "Largeur 1 épaule | Longueur 1,5 épaule", cropStyle: "top: 680px; left: 450px; transform: scale(2.2);" },
+            { name: "Posture basse (Nachuo Sogi)", desc: "Semblable à la posture de marche mais étirée à une longueur de 2 largeurs d'épaule, genoux profondément fléchis.", weight: "50% / 50%", dims: "Longueur 2 largeurs d'épaule", cropStyle: "top: 700px; left: 700px; transform: scale(2.2);" },
+            { name: "Posture croisée (Kyocha Sogi)", desc: "Un pied croisé devant ou derrière l'autre, en appui sur la plante du pied (ap kumchi).", weight: "100% jambe d'appui", dims: "Croisement complet", cropStyle: "top: 750px; left: 850px; transform: scale(2.2);" }
+        ];
+
+        // Base de données exhaustive des 25 Tuls officiels ITF
+        const tulsDatabase = [
+            { id: "chon-ji", name: "CHON-JI", movements: 19, group: "color", diagram: "+", badge: "1er Tul", sourceRef: "Encyclopédie ITF (1999)[span_4](start_span)[span_4](end_span)", desc: "Signifie littéralement 'le Ciel et la Terre'. Représente la création du monde et le début de l'histoire humaine.", movementsList: [
+                { id: 1, ko: "Gunnun so palmok najunde makgi", fr: "Posture de marche - Blocage bas", reason: "Interception basse.", amorce: "Armement croisé.", footwork: "Gunnun Sogi (50/50)", physics: "Sine Wave (PE = mgh)", reliability: "confirmé" },
+                { id: 2, ko: "Gunnun so kaunde jirugi", fr: "Posture de marche - Coup de poing milieu", reason: "Contre-attaque directe.", amorce: "Armement hanche.", footwork: "Gunnun Sogi (50/50)", physics: "Rotation des hanches", reliability: "confirmé" },
+                { id: 3, ko: "Gunnun so palmok najunde makgi", fr: "Posture de marche - Blocage bas (droite)", reason: "Interception basse latérale.", amorce: "Armement croisé.", footwork: "Gunnun Sogi (50/50)", physics: "Sine Wave", reliability: "confirmé" },
+                { id: 4, ko: "Gunnun so kaunde jirugi", fr: "Posture de marche - Coup de poing milieu (gauche)", reason: "Contre-attaque directe.", amorce: "Armement hanche.", footwork: "Gunnun Sogi (50/50)", physics: "Rotation des hanches", reliability: "confirmé" },
+                { id: 5, ko: "Gunnun so palmok najunde makgi", fr: "Posture de marche - Blocage bas vers D", reason: "Défense basse axiale.", amorce: "Armement croisé.", footwork: "Gunnun Sogi (50/50)", physics: "Sine Wave", reliability: "confirmé" },
+                { id: 6, ko: "Gunnun so kaunde jirugi", fr: "Posture de marche - Coup de poing milieu", reason: "Attaque axiale.", amorce: "Armement hanche.", footwork: "Gunnun Sogi (50/50)", physics: "Vitesse et masse", reliability: "confirmé" },
+                { id: 7, ko: "Gunnun so palmok najunde makgi", fr: "Posture de marche - Blocage bas", reason: "Défense basse.", amorce: "Armement croisé.", footwork: "Gunnun Sogi (50/50)", physics: "Sine Wave", reliability: "confirmé" },
+                { id: 8, ko: "Gunnun so kaunde jirugi", fr: "Posture de marche - Coup de poing milieu", reason: "Contre-attaque", amorce: "Armement hanche", footwork: "Gunnun Sogi (50/50)", physics: "Force de réaction", reliability: "confirmé" },
+                { id: 9, ko: "Niunja so anpalmok kaunde yop makgi", fr: "Posture en L - Blocage latéral avant-bras interne", reason: "Parade latérale intermédiaire.", amorce: "Armement croisé serré.", footwork: "Niunja Sogi (70/30)", physics: "Dissipation angulaire", reliability: "confirmé" },
+                { id: 10, ko: "Gunnun so kaunde jirugi", fr: "Posture de marche - Coup de poing milieu", reason: "Attaque en ligne.", amorce: "Hanche", footwork: "Gunnun Sogi (50/50)", physics: "Accélération", reliability: "confirmé" },
+                { id: 11, ko: "Niunja so anpalmok kaunde yop makgi", fr: "Posture en L - Blocage latéral", reason: "Parade latérale", amorce: "Armement serré", footwork: "Niunja Sogi (70/30)", physics: "Stabilité arrière", reliability: "confirmé" },
+                { id: 12, ko: "Gunnun so kaunde jirugi", fr: "Posture de marche - Coup de poing milieu", reason: "Attaque", amorce: "Hanche", footwork: "Gunnun Sogi (50/50)", physics: "Vitesse", reliability: "confirmé" },
+                { id: 13, ko: "Niunja so anpalmok kaunde yop makgi", fr: "Posture en L - Blocage latéral", reason: "Parade", amorce: "Armement", footwork: "Niunja Sogi (70/30)", physics: "Ancrage", reliability: "confirmé" },
+                { id: 14, ko: "Gunnun so kaunde jirugi", fr: "Posture de marche - Coup de poing milieu", reason: "Attaque", amorce: "Hanche", footwork: "Gunnun Sogi (50/50)", physics: "Force", reliability: "confirmé" },
+                { id: 15, ko: "Niunja so anpalmok kaunde yop makgi", fr: "Posture en L - Blocage latéral", reason: "Parade", amorce: "Armement", footwork: "Niunja Sogi (70/30)", physics: "Stabilité", reliability: "confirmé" },
+                { id: 16, ko: "Gunnun so kaunde jirugi", fr: "Posture de marche - Coup de poing milieu", reason: "Attaque", amorce: "Hanche", footwork: "Gunnun Sogi (50/50)", physics: "Vitesse", reliability: "confirmé" },
+                { id: 17, ko: "Gunnun so kaunde jirugi", fr: "Posture de marche - Coup de poing milieu", reason: "Attaque de confirmation", amorce: "Hanche", footwork: "Gunnun Sogi (50/50)", physics: "Vitesse", reliability: "confirmé" },
+                { id: 18, ko: "Gunnun so kaunde jirugi", fr: "Posture de marche - Coup de poing milieu", reason: "Attaque", amorce: "Hanche", footwork: "Gunnun Sogi (50/50)", physics: "Énergie cinétique", reliability: "confirmé" },
+                { id: 19, ko: "Gunnun so kaunde jirugi", fr: "Posture de marche - Coup de poing milieu final", reason: "Frappe finale du Tul", amorce: "Hanche", footwork: "Gunnun Sogi (50/50)", physics: "Concentration maximale", reliability: "confirmé" }
+            ]},
+            { id: "dan-gun", name: "DAN-GUN", movements: 21, group: "color", diagram: "I", badge: "2e Tul", sourceRef: "Encyclopédie ITF (1999)[span_5](start_span)[span_5](end_span)", desc: "Nommé d'après le saint fondateur de la Corée en l'an 2333 av. J.-C.", movementsList: [
+                { id: 1, ko: "Niunja so sonkal kaunde daebi makgi", fr: "Posture en L - Double blocage garde couteau", reason: "Garde latérale de protection intermédiaire.", amorce: "Armement croisé.", footwork: "Niunja Sogi (70/30)", physics: "Répartition des masses", reliability: "confirmé" },
+                { id: 2, ko: "Gunnun so nopunde jirugi", fr: "Posture de marche - Coup de poing haut", reason: "Frappe au visage.", amorce: "Hanche.", footwork: "Gunnun Sogi (50/50)", physics: "Vitesse et hauteur", reliability: "confirmé" }
+            ]},
+            { id: "do-san", name: "DO-SAN", movements: 24, group: "color", diagram: "Z", badge: "3e Tul", sourceRef: "Encyclopédie ITF (1999)[span_6](start_span)[span_6](end_span)", desc: "Pseudonyme du patriote Ahn Chang-Ho (1878-1938).", movementsList: [
+                { id: 1, ko: "Gunnun so bakat palmok nopunde yop makgi", fr: "Posture de marche - Blocage latéral haut avant-bras externe", reason: "Parade haute extérieure.", amorce: "Armement bas.", footwork: "Gunnun Sogi (50/50)", physics: "Levier cinétique", reliability: "confirmé" }
+            ]},
+            { id: "won-hyo", name: "WON-HYO", movements: 28, group: "color", diagram: "I", badge: "4e Tul", sourceRef: "Encyclopédie ITF (1999)[span_7](start_span)[span_7](end_span)", desc: "Moine fameux qui introduisit le bouddhisme sous la dynastie Silla.", movementsList: [
+                { id: 1, ko: "Niunja so sang palmok makgi", fr: "Posture en L - Double blocage avant-bras", reason: "Parer une attaque lourde.", amorce: "Croisement devant la poitrine.", footwork: "Niunja Sogi (70/30)", physics: "Absorption structurelle", reliability: "confirmé" }
+            ]},
+            { id: "yul-gok", name: "YUL-GOK", movements: 38, group: "color", diagram: "士", badge: "5e Tul", sourceRef: "Encyclopédie ITF (1999)[span_8](start_span)[span_8](end_span)", desc: "Pseudonyme du philosophe Yi I (1536-1584).", movementsList: [
+                { id: 1, ko: "Annun sogi", fr: "Posture assise - Extension horizontale du poing", reason: "Base stable latérale.", amorce: "Armement central.", footwork: "Annun Sogi (50/50)", physics: "Stabilité latérale", reliability: "confirmé" }
+            ]},
+            { id: "joong-gun", name: "JOONG-GUN", movements: 32, group: "color", diagram: "I", badge: "6e Tul", sourceRef: "Encyclopédie ITF (1999)[span_9](start_span)[span_9](end_span)", desc: "Nommé d'après le patriote An Joong-Gun.", movementsList: [
+                { id: 1, ko: "Niunja so sonkal dung kaunde makgi", fr: "Posture en L - Blocage milieu tranchant inversé", reason: "Défense interne.", amorce: "Croisement fluide.", footwork: "Niunja Sogi (70/30)", physics: "Centrage et stabilité", reliability: "confirmé" }
+            ]},
+            { id: "toi-gye", name: "TOI-GYE", movements: 37, group: "color", diagram: "士", badge: "7e Tul", sourceRef: "Encyclopédie ITF (1999)[span_10](start_span)[span_10](end_span)", desc: "Pseudonyme du chercheur Yi Hwang (16e siècle).", movementsList: [
+                { id: 1, ko: "Niunja so anpalmok kaunde makgi", fr: "Posture en L - Blocage avant-bras interne", reason: "Parer une frappe moyenne.", amorce: "Croisement armement.", footwork: "Niunja Sogi (70/30)", physics: "Déviation angulaire", reliability: "confirmé" }
+            ]},
+            { id: "hwa-rang", name: "HWA-RANG", movements: 29, group: "color", diagram: "I", badge: "8e Tul", sourceRef: "Encyclopédie ITF (1999)[span_11](start_span)[span_11](end_span)", desc: "Nommé d'après le corps de guerriers d'élite de Silla.", movementsList: [
+                { id: 1, ko: "Annun so wen sonbadak kaunde yobap miro makgi", fr: "Posture assise - Blocage poussé paume", reason: "Dévier par poussée.", amorce: "Armement poitrine.", footwork: "Annun Sogi (50/50)", physics: "Poussée de surface", reliability: "confirmé" }
+            ]},
+            { id: "choong-moo", name: "CHOONG-MOO", movements: 30, group: "color", diagram: "I", badge: "9e Tul", sourceRef: "Encyclopédie ITF (1999)[span_12](start_span)[span_12](end_span)", desc: "Nom de chevalerie de l'Amiral Yi Sun-Sin.", movementsList: [
+                { id: 1, ko: "Niunja so sang sonkal makgi", fr: "Posture en L - Double blocage tranchant", reason: "Protection haute/moyenne.", amorce: "Armement latéral.", footwork: "Niunja Sogi (70/30)", physics: "Équilibre biomécanique", reliability: "confirmé" }
+            ]},
+            { id: "kwang-gae", name: "KWANG-GAE", movements: 39, group: "black", diagram: "土", badge: "1er Dan", sourceRef: "Encyclopédie ITF (1999)[span_13](start_span)[span_13](end_span)", desc: "Nommé d'après le Roi Kwang-Gae-Toh-Wang.", movementsList: [
+                { id: 1, ko: "Gunnun so bandae dwijibo jirugi", fr: "Posture de marche - Coup de poing inversé retourné", reason: "Attaque en tension lente.", amorce: "Tension isométrique.", footwork: "Gunnun Sogi (50/50)", physics: "Force en tension", reliability: "confirmé" }
+            ]},
+            { id: "po-eun", name: "PO-EUN", movements: 36, group: "black", diagram: "–", badge: "1er Dan", sourceRef: "Encyclopédie ITF (1999)[span_14](start_span)[span_14](end_span)", desc: "Pseudonyme du poète loyal Jeong Mong-Ju.", movementsList: [
+                { id: 1, ko: "Niunja so palmok kaunde daebi makgi", fr: "Posture en L - Blocage de garde avant-bras", reason: "Protection de garde.", amorce: "Armement bras.", footwork: "Niunja Sogi (70/30)", physics: "Répartition 70/30", reliability: "confirmé" }
+            ]},
+            { id: "ge-baek", name: "GE-BAEK", movements: 44, group: "black", diagram: "I", badge: "1er Dan", sourceRef: "Encyclopédie ITF (1999)[span_15](start_span)[span_15](end_span)", desc: "Nommé d'après le Général Ge-Baek de Baekje.", movementsList: [
+                { id: 1, ko: "Niunja so kyocha sonkal momchau makgi", fr: "Posture en L - Blocage de vérification en X avec tranchant", reason: "Interception ferme.", amorce: "Croisement haut.", footwork: "Niunja Sogi (70/30)", physics: "Intersection des axes", reliability: "confirmé" }
+            ]},
+            { id: "eui-am", name: "EUI-AM", movements: 45, group: "black", diagram: "I", badge: "2e Dan", sourceRef: "Encyclopédie ITF (1999)[span_16](start_span)[span_16](end_span)", desc: "Pseudonyme de Son Byong Hi, patriote coréen.", movementsList: [
+                { id: 1, ko: "Gunnun so sonkal najunde bandae anuro makgi", fr: "Posture de marche - Blocage bas interne tranchant", reason: "Défense basse.", amorce: "Armement épaule.", footwork: "Gunnun Sogi (50/50)", physics: "Poussée descendante", reliability: "confirmé" }
+            ]},
+            { id: "choong-jang", name: "CHOONG-JANG", movements: 52, group: "black", diagram: "I", badge: "2e Dan", sourceRef: "Encyclopédie ITF (1999)[span_17](start_span)[span_17](end_span)", desc: "Pseudonyme du Général Kim Duk Ryang.", movementsList: [
+                { id: 1, ko: "Annun so orun anpalmok yobap makgi", fr: "Posture assise - Blocage avant-latéral", reason: "Protection rapprochée.", amorce: "Armement torse.", footwork: "Annun Sogi (50/50)", physics: "Inertie latérale", reliability: "confirmé" }
+            ]},
+            { id: "juche", name: "JUCHE", movements: 45, group: "black", diagram: "土", badge: "2e Dan", sourceRef: "Encyclopédie ITF (1999)[span_18](start_span)[span_18](end_span)", desc: "Basé sur la philosophie de l'autonomie de l'homme.", movementsList: [
+                { id: 1, ko: "Annun so anpalmok narani makgi", fr: "Posture assise - Blocage parallèle avant-bras", reason: "Défense parallèle.", amorce: "Armement synchronisé.", footwork: "Annun Sogi (50/50)", physics: "Structure symétrique", reliability: "confirmé" }
+            ]},
+            { id: "sam-il", name: "SAM-IL", movements: 33, group: "black", diagram: "☲", badge: "3e Dan", sourceRef: "Encyclopédie ITF (1999)[span_19](start_span)[span_19](end_span)", desc: "Commémore le mouvement d'indépendance du 1er mars 1919.", movementsList: [
+                { id: 1, ko: "Niunja so palmok kaunde daebi makgi", fr: "Posture en L - Blocage de garde avant-bras", reason: "Protection haute/moyenne.", amorce: "Croisement bas.", footwork: "Niunja Sogi (70/30)", physics: "Couplage des forces", reliability: "confirmé" }
+            ]},
+            { id: "yoo-sin", name: "YOO-SIN", movements: 68, group: "black", diagram: "I", badge: "3e Dan", sourceRef: "Encyclopédie ITF (1999)[span_20](start_span)[span_20](end_span)", desc: "Nommé d'après le Général Kim Yoo-Sin.", movementsList: [
+                { id: 1, ko: "Annun sogi", fr: "Posture assise - Extension des coudes", reason: "Attaque circulaire.", amorce: "Armement large.", footwork: "Annun Sogi (50/50)", physics: "Vitesse tangentielle", reliability: "confirmé" }
+            ]},
+            { id: "choi-yong", name: "CHOI-YONG", movements: 46, group: "black", diagram: "I", badge: "3e Dan", sourceRef: "Encyclopédie ITF (1999)[span_21](start_span)[span_21](end_span)", desc: "Nommé d'après le Général Choi Yong.", movementsList: [
+                { id: 1, ko: "Dwitbal so palmok kaunde daebi makgi", fr: "Posture pied arrière - Blocage garde", reason: "Garde rétractée.", amorce: "Transfert du poids.", footwork: "Dwitbal Sogi (95/5)", physics: "Réactivité instantanée", reliability: "confirmé" }
+            ]},
+            { id: "yong-gae", name: "YONG-GAE", movements: 49, group: "black", diagram: "I", badge: "4e Dan", sourceRef: "Encyclopédie ITF (1999)[span_22](start_span)[span_22](end_span)", desc: "Nommé d'après le Général Yeon Gae Somoon.", movementsList: [
+                { id: 1, ko: "Niunja so sonkal dung najunde daebi makgi", fr: "Posture en L - Blocage bas de garde avec tranchant inversé", reason: "Interception croisée.", amorce: "Croisement haut.", footwork: "Niunja Sogi (70/30)", physics: "Verrouillage d'impact", reliability: "confirmé" }
+            ]},
+            { id: "ul-ji", name: "UL-JI", movements: 42, group: "black", diagram: "乙", badge: "4e Dan", sourceRef: "Encyclopédie ITF (1999)[span_23](start_span)[span_23](end_span)", desc: "Nommé d'après le Général Ul-Ji Moon Dok.", movementsList: [
+                { id: 1, ko: "Gunnun so sang yop joomuk soopyong taerigi", fr: "Posture de marche - Frappe horizontale double poing latéral", reason: "Frappe de balayage.", amorce: "Armement croisé.", footwork: "Gunnun Sogi (50/50)", physics: "Absorption d'énergie", reliability: "confirmé" }
+            ]},
+            { id: "moon-moo", name: "MOON-MOO", movements: 61, group: "black", diagram: "武", badge: "4e Dan", sourceRef: "Encyclopédie ITF (1999)[span_24](start_span)[span_24](end_span)", desc: "Honorant le 30e Roi de Silla.", movementsList: [
+                { id: 1, ko: "Guburyo junbi sogi A", fr: "Posture fléchie de préparation A", reason: "Armement jambe.", amorce: "Montée du genou.", footwork: "Guburyo Sogi (100%)", physics: "Stockage PE = mgh", reliability: "confirmé" }
+            ]},
+            { id: "so-san", name: "SO-SAN", movements: 72, group: "black", diagram: "I", badge: "5e Dan", sourceRef: "Encyclopédie ITF (1999)[span_25](start_span)[span_25](end_span)", desc: "Pseudonyme du grand moine guerrier Choi Hyun-Ung.", movementsList: [
+                { id: 1, ko: "Dwitbal so palmok kaunde daebi makgi", fr: "Posture pied arrière - Blocage de garde", reason: "Mise en garde de référence.", amorce: "Armement fluide.", footwork: "Dwitbal Sogi (95/5)", physics: "Équilibre et stabilité", reliability: "confirmé" }
+            ]},
+            { id: "se-jong", name: "SE-JONG", movements: 24, group: "black", diagram: "王", badge: "4e Dan", sourceRef: "Encyclopédie ITF (1999)[span_26](start_span)[span_26](end_span)", desc: "Nommé d'après le Roi Se-Jong, inventeur du Hangul.", movementsList: [
+                { id: 1, ko: "Gunnun so palmok najunde makgi", fr: "Posture de marche - Blocage bas", reason: "Frappe de précision.", amorce: "Armement poitrine.", footwork: "Gunnun Sogi (50/50)", physics: "Lever de force angulaire", reliability: "confirmé" }
+            ]},
+            { id: "tong-il", name: "TONG-IL", movements: 56, group: "black", diagram: "|", badge: "6e Dan", sourceRef: "Encyclopédie ITF (1999)[span_27](start_span)[span_27](end_span)", desc: "Exprime la résolution de l'unification de la Corée.", movementsList: [
+                { id: 1, ko: "Gunnun so sang joomuk kaunde jirugi", fr: "Posture de marche - Coup de poing double milieu", reason: "Défense rapprochée.", amorce: "Armement serré.", footwork: "Gunnun Sogi (50/50)", physics: "Alignement vertical", reliability: "confirmé" }
+            ]},
+            { id: "ko-dang", name: "KO-DANG", movements: 39, group: "black", diagram: "T", badge: "Forme classique", sourceRef: "Encyclopédie ITF (1999)[span_28](start_span)[span_28](end_span)", desc: "Pseudonyme du patriote Cho Man Sik.", movementsList: [
+                { id: 1, ko: "Annun so orun sonbadak kaunde miro makgi", fr: "Posture assise - Poussée milieu avec paume", reason: "Garde classique.", amorce: "Armement tempes.", footwork: "Annun Sogi (50/50)", physics: "Ancrage arrière", reliability: "confirmé" }
+            ]}
+        ];
+
+        let selectedTul = tulsDatabase[0];
+        let currentSearchQuery = "";
+
+        function switchView(viewName) {
+            const views = ['view-tuls', 'view-postures', 'view-science', 'view-secrets', 'view-power'];
+            const navs = ['nav-tuls', 'nav-postures', 'nav-science', 'nav-secrets', 'nav-power'];
+
+            views.forEach((v, idx) => {
+                document.getElementById(v).classList.add('hidden');
+                document.getElementById(navs[idx]).className = "px-3 py-2 rounded-lg font-semibold text-slate-300 hover:text-white transition";
+            });
+
+            document.getElementById(`view-${viewName}`).classList.remove('hidden');
+            document.getElementById(`nav-${viewName}`).className = "px-3 py-2 rounded-lg font-bold bg-itf-gold text-slate-950 transition shadow";
+
+            if (viewName === 'postures') renderPosturesDirectory();
+        }
+
+        function renderPosturesDirectory(filter = "") {
+            const grid = document.getElementById('postures-grid');
+            grid.innerHTML = "";
+
+            const filtered = posturesDatabase.filter(p => 
+                p.name.toLowerCase().includes(filter.toLowerCase()) || 
+                p.desc.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "bg-itf-darkCard p-5 rounded-2xl border border-slate-800 shadow-xl flex flex-col justify-between space-y-4";
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded bg-itf-blue/40 text-itf-gold border border-itf-accent/30 text-[10px] font-bold uppercase">Source Originale</span>
+                            <span class="text-[11px] text-slate-400 font-mono"><i class="fa-solid fa-scale-balanced mr-1"></i>${p.weight}</span>
+                        </div>
+                        <div>
+                            <h3 class="font-bold font-serif text-white text-sm mb-1">${p.name}</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">${p.desc}</p>
+                        </div>
+                        <div class="source-crop-container">
+                            <img src="https://i.ibb.co/3s4517V/image.png" alt="Schéma posture" class="source-crop-img" style="${p.cropStyle}">
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-slate-800/80 text-[11px] text-amber-300 font-mono flex items-center">
+                        <i class="fa-solid fa-ruler-combined mr-1.5"></i> ${p.dims}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterPostures(val) { renderPosturesDirectory(val); }
+
+        function renderTulButtons(filterGroup = "all") {
+            const container = document.getElementById("tul-grid");
+            container.innerHTML = "";
+            const filtered = tulsDatabase.filter(t => filterGroup === "all" || t.group === filterGroup);
+
+            filtered.forEach(t => {
+                const btn = document.createElement("button");
+                const isSelected = t.id === selectedTul.id;
+                btn.className = `p-2.5 rounded-xl border text-left transition flex flex-col justify-between ${
+                    isSelected ? "bg-itf-accent text-white border-itf-gold shadow-lg ring-2 ring-itf-gold/50" : "bg-slate-900/80 text-slate-300 border-slate-800 hover:border-slate-600 hover:bg-slate-800"
+                }`;
+                btn.onclick = () => selectTul(t.id);
+                btn.innerHTML = `
+                    <div class="flex items-center justify-between text-[10px] font-bold">
+                        <span class="${isSelected ? "text-itf-gold" : "text-slate-400"}">${t.badge}</span>
+                        <span class="text-slate-500">${t.movements} mvt</span>
+                    </div>
+                    <div class="font-bold text-xs mt-1 tracking-wide font-serif truncate">${t.name}</div>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function selectTul(tulId) {
+            selectedTul = tulsDatabase.find(t => t.id === tulId);
+            renderTulButtons(document.querySelector('.group-btn.active').getAttribute('data-group'));
+            updateTulBanner();
+            renderMovements(currentSearchQuery);
+        }
+
+        function updateTulBanner() {
+            document.getElementById("tul-badge").textContent = selectedTul.badge;
+            document.getElementById("tul-title").textContent = selectedTul.name;
+            document.getElementById("tul-description").textContent = selectedTul.desc + (selectedTul.sourceRef ? ` (${selectedTul.sourceRef})` : '');
+            document.getElementById("tul-mov-count").textContent = selectedTul.movements;
+            document.getElementById("tul-diagram").textContent = selectedTul.diagram;
+        }
+
+        function handleSearch(query) {
+            currentSearchQuery = query;
+            renderMovements(query);
+        }
+
+        function renderMovements(filterQuery = "") {
+            const list = document.getElementById("movements-list");
+            list.innerHTML = "";
+            const filteredMovs = selectedTul.movementsList.filter(m => 
+                m.ko.toLowerCase().includes(filterQuery.toLowerCase()) || m.fr.toLowerCase().includes(filterQuery.toLowerCase())
+            );
+
+            if (filteredMovs.length === 0) {
+                list.innerHTML = `<div class="p-6 text-center text-slate-400 bg-itf-darkCard rounded-xl border border-slate-800">Aucun mouvement ne correspond à votre recherche dans ce Tul.</div>`;
+                return;
+            }
+
+            filteredMovs.forEach(m => {
+                const card = document.createElement("div");
+                card.className = "bg-itf-darkCard rounded-xl border border-slate-800 overflow-hidden";
+                card.innerHTML = `
+                    <div class="card-header p-4 cursor-pointer flex items-center justify-between hover:bg-slate-800/40 transition">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-itf-blue border border-itf-accent text-itf-gold font-bold flex items-center justify-center text-xs font-serif shrink-0">${m.id}</span>
+                            <div>
+                                <h3 class="font-bold text-white text-sm">${m.fr}</h3>
+                                <p class="text-xs text-itf-gold font-mono">${m.ko}</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-xs text-itf-gold transition-transform chevron"></i>
+                    </div>
+                    <div class="card-body hidden p-4 bg-slate-950/60 border-t border-slate-800 text-xs space-y-3">
+                        <div class="p-3 bg-itf-blue/20 border border-itf-accent/30 rounded-lg">
+                            <strong class="text-itf-gold uppercase tracking-wider block mb-0.5">Application Martiale & Rationale</strong>
+                            <p class="text-slate-300 leading-relaxed">${m.reason}</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+                            <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
+                                <strong class="text-amber-400 block mb-0.5">Amorce & Relâchement</strong>
+                                ${m.amorce}
+                            </div>
+                            <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
+                                <strong class="text-sky-400 block mb-0.5">Les positions</strong>
+                                ${m.footwork}
+                            </div>
+                        </div>
+                        <div class="pt-2 border-t border-slate-800 text-itf-gold font-mono text-[11px] flex justify-between items-center">
+                            <span><i class="fa-solid fa-atom mr-1"></i>${m.physics}</span>
+                            <span class="px-2 py-0.5 bg-emerald-950 text-emerald-400 rounded border border-emerald-800/50 uppercase text-[9px] font-bold">Source confirmée (Encyclopédie 1999)[span_29](start_span)[span_29](end_span)</span>
+                        </div>
+                    </div>
+                `;
+
+                const header = card.querySelector('.card-header');
+                const body = card.querySelector('.card-body');
+                const chevron = card.querySelector('.chevron');
+
+                header.onclick = () => {
+                    const hidden = body.classList.contains('hidden');
+                    if (hidden) { body.classList.remove('hidden'); chevron.style.transform = 'rotate(180deg)'; }
+                    else { body.classList.add('hidden'); chevron.style.transform = 'rotate(0deg)'; }
+                };
+                list.appendChild(card);
+            });
+        }
+
+        document.querySelectorAll('.group-btn').forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll('.group-btn').forEach(b => { b.classList.remove('bg-itf-gold', 'text-slate-950', 'active'); b.classList.add('bg-slate-800', 'text-slate-300'); });
+                btn.classList.remove('bg-slate-800', 'text-slate-300');
+                btn.classList.add('bg-itf-gold', 'text-slate-950', 'active');
+                renderTulButtons(btn.getAttribute('data-group'));
+            };
+        });
+
+        document.getElementById('expand-all-btn').onclick = () => {
+            document.querySelectorAll('#movements-list .card-body').forEach(b => b.classList.remove('hidden'));
+            document.querySelectorAll('#movements-list .chevron').forEach(i => i.style.transform = 'rotate(180deg)');
+        };
+        document.getElementById('collapse-all-btn').onclick = () => {
+            document.querySelectorAll('#movements-list .card-body').forEach(b => b.classList.add('hidden'));
+            document.querySelectorAll('#movements-list .chevron').forEach(i => i.style.transform = 'rotate(0deg)');
+        };
+
+        renderTulButtons("all");
+        updateTulBanner();
+        renderMovements();
+    </script>
+</body>
+</html>
