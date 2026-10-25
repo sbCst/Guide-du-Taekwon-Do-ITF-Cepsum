@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide Technique ITF — 25 Formes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07131f;
+      --panel: #0f1d2d;
+      --panel-2: #16283d;
+      --line: #29405a;
+      --gold: #d4af37;
+      --gold-soft: #f6d77c;
+      --text: #edf3ff;
+      --muted: #a6b6d0;
+      --blue: #7dd3fc;
+      --red: #da3a5a;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #061019 0%, #0a1726 40%, #0c1c2d 100%);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+    }
+
+    h1, h2, h3, h4 { font-family: "Cinzel", serif; }
+    .gold { color: var(--gold); }
+    .muted { color: var(--muted); }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(7, 19, 31, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(212,175,55,0.25);
+    }
+
+    .nav-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--gold), #ffde7a);
+      color: #0f172a;
+      font-family: "Cinzel", serif;
+      font-weight: 900;
+      font-size: 24px;
+      box-shadow: 0 8px 20px rgba(212,175,55,0.25);
+    }
+
+    .brand-title {
+      font-size: clamp(1.2rem, 2vw, 1.75rem);
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #d9e4f7;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(212,175,55,0.15);
+      border-color: rgba(212,175,55,0.45);
+      color: white;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(19,33,49,0.85), rgba(12,23,34,0.9));
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 18px 30px rgba(0,0,0,0.18);
+    }
+
+    .hero-main {
+      padding: 26px 26px 20px;
+    }
+
+    .kicker {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(212,175,55,0.12);
+      border: 1px solid rgba(212,175,55,0.4);
+      color: var(--gold-soft);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 18px 0 12px;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: 0.05em;
+    }
+
+    .hero p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0;
+      max-width: 60ch;
+    }
+
+    .hero-aside {
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+
+    .stat-label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: clamp(1.4rem, 3vw, 2.3rem);
+      font-weight: 800;
+      color: var(--gold-soft);
+      font-family: "Cinzel", serif;
+    }
+
+    .toolbar {
+      margin: 24px 0 18px;
+      padding: 18px 18px;
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .search-wrap, .select-wrap {
+      position: relative;
+    }
+
+    input, select {
+      width: 100%;
+      background: rgba(7, 20, 29, 0.8);
+      border: 1px solid var(--line);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 13px 14px;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: rgba(212,175,55,0.75);
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
+    }
+
+    .summary {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.84rem;
+      padding-right: 6px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1.8fr;
+      gap: 18px;
+    }
+
+    .patterns-panel {
+      padding: 16px;
+    }
+
+    .patterns-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      max-height: 900px;
+      overflow: auto;
+    }
+
+    .pattern-btn {
+      width: 100%;
+      text-align: left;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 14px 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .pattern-btn:hover {
+      border-color: rgba(212,175,55,0.45);
+      background: rgba(212,175,55,0.06);
+      transform: translateY(-1px);
+    }
+
+    .pattern-btn.active {
+      background: linear-gradient(135deg, rgba(212,175,55,0.12), rgba(125,211,252,0.08));
+      border-color: rgba(212,175,55,0.7);
+      box-shadow: inset 0 0 0 1px rgba(212,175,55,0.35);
+    }
+
+    .pattern-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .pattern-name {
+      display: block;
+      font-family: "Cinzel", serif;
+      font-size: 1.15rem;
+      margin-top: 6px;
+    }
+
+    .detail-panel {
+      padding: 18px 20px 20px;
+      min-height: 840px;
+    }
+
+    .detail-header {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 16px;
+      margin-bottom: 18px;
+    }
+
+    .detail-badge {
+      display: inline-block;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(212,175,55,0.14);
+      color: var(--gold-soft);
+      font-size: 0.72rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-weight: 800;
+      border: 1px solid rgba(212,175,55,0.35);
+    }
+
+    .detail-title {
+      margin-top: 14px;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      letter-spacing: 0.08em;
+    }
+
+    .detail-sub {
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(120px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    .mini-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .mini-card strong {
+      color: var(--gold-soft);
+      font-size: 1.05rem;
+      font-family: "Cinzel", serif;
+    }
+
+    .moves {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .move {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 12px;
+    }
+
+    .move-num {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(125,211,252,0.08);
+      border: 1px solid rgba(125,211,252,0.3);
+      color: var(--blue);
+      font-weight: 800;
+    }
+
+    .move-text {
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .move-text .ko {
+      display: block;
+      color: var(--gold-soft);
+      font-size: 0.82rem;
+      margin-top: 5px;
+      font-weight: 600;
+    }
+
+    .links-box {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .links-box h3 {
+      font-size: 1.1rem;
+      margin: 0 0 12px;
+      color: var(--gold-soft);
+    }
+
+    .link-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .link-list a {
+      color: #dfeeff;
+      text-decoration: none;
+      display: inline-block;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .link-list a:hover {
+      background: rgba(212,175,55,0.08);
+      border-color: rgba(212,175,55,0.45);
+    }
+
+    .empty {
+      display: none;
+      padding: 28px 18px;
+      text-align: center;
+      color: var(--muted);
+      background: rgba(255,255,255,0.02);
+      border: 1px dashed rgba(255,255,255,0.12);
+      border-radius: 18px;
+    }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .hero { grid-template-columns: 1fr; }
+      .toolbar { grid-template-columns: 1fr; }
+      .summary { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="nav-shell">
+      <div class="brand">
+        <div class="brand-mark">武</div>
+        <div>
+          <div class="brand-title">GUIDE TECHNIQUE ITF</div>
+        </div>
+      </div>
+
+      <nav class="nav-links" aria-label="navigation principale">
+        <a href="#formes">Formes</a>
+        <a href="#postures">Postures</a>
+        <a href="#science">Science</a>
+        <a href="#liens">Liens</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" id="formes">
+      <div class="panel hero-main">
+        <span class="kicker">Référentiel officiel</span>
+        <h1>25 formes ITF</h1>
+        <p>
+          Guide technique de référence pour l’ITF Taekwon-Do : recherche rapide,
+          filtrage par ceinture, consultation de la séquence, et accès aux informations
+          de base du programme officiel.
+        </p>
+      </div>
+
+      <div class="panel hero-aside">
+        <div class="stat">
+          <span class="stat-label">Formes</span>
+          <div class="stat-value">25</div>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Ceintures couleur</span>
+          <div class="stat-value">9</div>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Ceintures noires</span>
+          <div class="stat-value">16</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel toolbar">
+      <div class="search-wrap">
+        <input id="searchInput" type="text" placeholder="Rechercher une forme, un terme, un mouvement..." />
+      </div>
+
+      <div class="select-wrap">
+        <select id="groupFilter">
+          <option value="all">Toutes les formes</option>
+          <option value="color">Ceintures couleur</option>
+          <option value="black">Ceintures noires</option>
+        </select>
+      </div>
+
+      <div class="select-wrap">
+        <select id="sortSelect">
+          <option value="order">Ordre du programme</option>
+          <option value="name">Ordre alphabétique</option>
+          <option value="moves">Plus de mouvements</option>
+        </select>
+      </div>
+
+      <div class="summary" style="grid-column: 1 / -1;">
+        <span id="resultCount">0 forme(s)</span>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="panel patterns-panel">
+        <div id="patternsGrid" class="patterns-grid" aria-live="polite"></div>
+        <div id="emptyState" class="empty">Aucune forme ne correspond à votre recherche.</div>
+      </aside>
+
+      <section class="panel detail-panel" id="detailPanel">
+        <div class="detail-header">
+          <span class="detail-badge" id="detailBadge">1er Tul</span>
+          <h2 id="detailTitle" class="detail-title">CHON-JI</h2>
+          <p id="detailText" class="detail-sub">
+            Signifie “le Ciel et la Terre”. Représente le début et la création du monde.
+          </p>
+        </div>
+
+        <div class="mini-grid">
+          <div class="mini-card">
+            <span>Catégorie</span>
+            <strong id="detailGroup">Ceinture couleur</strong>
+          </div>
+          <div class="mini-card">
+            <span>Nombre de mouvements</span>
+            <strong id="detailMoves">19</strong>
+          </div>
+          <div class="mini-card">
+            <span>Diagramme</span>
+            <strong id="detailDiagram">+</strong>
+          </div>
+        </div>
+
+        <div class="moves" id="movesList"></div>
+
+        <div class="links-box" id="liens">
+          <h3>Liens et références</h3>
+          <ul class="link-list">
+            <li><a href="https://www.itf-tkd.org/" target="_blank" rel="noreferrer">ITF – Site officiel</a></li>
+            <li><a href="https://www.itf-tkd.org/" target="_blank" rel="noreferrer">Références techniques ITF</a></li>
+            <li><a href="#" onclick="return false;">PDF / Documents de séquences</a></li>
+            <li><a href="#" onclick="return false;">Catalogue des 25 formes</a></li>
+          </ul>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const patterns = [
+      { id: "chon-ji", name: "CHON-JI", group: "color", badge: "1er Tul", moves: 19, diagram: "+", description: "Signifie littéralement le Ciel et la Terre. Représente le début et la création du monde.", movements: [
+        { n: 1, text: "Déplacement vers B en garde de marche, bloc bas avec l’avant-bras gauche.", ko: "Gunnun so palmok najunde makgi" },
+        { n: 2, text: "Déplacement vers B en garde de marche, coup de poing médian droit.", ko: "Gunnun so kaunde jirugi" },
+        { n: 3, text: "Déplacement vers A suivi d’un bloc bas avec l’avant-bras droit.", ko: "Gunnun so palmok najunde makgi" },
+        { n: 4, text: "Déplacement vers A, coup médian gauche.", ko: "Gunnun so kaunde jirugi" },
+        { n: 5, text: "Déplacement vers D, bloc bas gauche.", ko: "Gunnun so palmok najunde makgi" },
+        { n: 6, text: "Déplacement vers D, coup médian droit.", ko: "Gunnun so kaunde jirugi" }
+      ]},
+      { id: "dan-gun", name: "DAN-GUN", group: "color", badge: "2e Tul", moves: 21, diagram: "I", description: "Nommé d’après le fondateur mythique de la Corée, Dangun.", movements: [
+        { n: 1, text: "Posture en L droite vers B, bloc de garde au milieu avec le couteau-main gauche.", ko: "Niunja so sonkal kaunde daebi makgi" },
+        { n: 2, text: "Garde de marche droite vers B, coup haut droit.", ko: "Gunnun so nopunde jirugi" },
+        { n: 3, text: "Déplacement vers A et bloc de garde moyen avec le couteau-main droit.", ko: "Niunja so sonkal kaunde daebi makgi" }
+      ]},
+      { id: "do-san", name: "DO-SAN", group: "color", badge: "3e Tul", moves: 24, diagram: "Z", description: "Pseudonyme du patriote Ahn Chang-Ho.", movements: [
+        { n: 1, text: "Déplacement vers B, bloc latéral haut avec l’avant-bras externe gauche.", ko: "Gunnun so bakat palmok nopunde yop makgi" },
+        { n: 2, text: "Coup médian droit en garde de marche gauche.", ko: "Gunnun so kaunde bandae jirugi" }
+      ]},
+      { id: "won-hyo", name: "WON-HYO", group: "color", badge: "4e Tul", moves: 28, diagram: "I", description: "Moine coréen célèbre pour l’introduction du bouddhisme.", movements: [
+        { n: 1, text: "Déplacement vers B, bloc double avec les avant-bras.", ko: "Niunja so sang palmok makgi" },
+        { n: 2, text: "Frappe intérieure haute avec le couteau-main droit.", ko: "Niunja so sonkal nopunde anuro taerigi" }
+      ]},
+      { id: "yul-gok", name: "YUL-GOK", group: "color", badge: "5e Tul", moves: 38, diagram: "士", description: "Pseudonyme de Yi I, philosophe et penseur coréen.", movements: [
+        { n: 1, text: "Posture assise vers D, poing horizontal gauche.", ko: "Annun so" },
+        { n: 2, text: "Coup médian droit vers D.", ko: "Annun so orun joomuk kaunde ap jirugi" }
+      ]},
+      { id: "joong-gun", name: "JOONG-GUN", group: "color", badge: "6e Tul", moves: 32, diagram: "I", description: "En mémoire du patriote An Joong-Gun.", movements: [
+        { n: 1, text: "Déplacement vers B, bloc de garde moyen avec le couteau-main gauche inversé.", ko: "Niunja so sonkal dung kaunde makgi" },
+        { n: 2, text: "Coup de pied latéral bas gauche.", ko: "Najunde yobap cha busigi" }
+      ]},
+      { id: "toi-gye", name: "TOI-GYE", group: "color", badge: "7e Tul", moves: 37, diagram: "士", description: "Pseudonyme du patriote et érudit Yi Hwang.", movements: [
+        { n: 1, text: "Déplacement vers B, bloc moyen interne avec l’avant-bras gauche.", ko: "Niunja so anpalmok kaunde makgi" },
+        { n: 2, text: "Poussée basse avec l’extrémité du doigt.", ko: "Gunnun so dwijibun sonkut najunde tulgi" }
+      ]},
+      { id: "hwa-rang", name: "HWA-RANG", group: "color", badge: "8e Tul", moves: 29, diagram: "I", description: "Hommage au corps d’élite du royaume de Silla.", movements: [
+        { n: 1, text: "Posture assise vers D, bloc de poussée moyen avec la paume gauche.", ko: "Annun so wen sonbadak kaunde yobap miro makgi" },
+        { n: 2, text: "Coup droit au milieu.", ko: "Annun so orun joomuk kaunde ap jirugi" }
+      ]},
+      { id: "choong-moo", name: "CHOONG-MOO", group: "color", badge: "9e Tul", moves: 30, diagram: "I", description: "En l’honneur de l’amiral Yi Sun-Sin.", movements: [
+        { n: 1, text: "Déplacement vers B, bloc double avec les couteaux-mains.", ko: "Niunja so sang sonkal makgi" },
+        { n: 2, text: "Déplacement vers B, coup frontal élevé.", ko: "Gunnun so sonkal nopunde ap taerigi" }
+      ]},
+      { id: "kwang-gae", name: "KWANG-GAE", group: "black", badge: "1er Dan", moves: 39, diagram: "土", description: "En l’honneur du roi Kwang-Gae-Toh-Wang.", movements: [
+        { n: 1, text: "Mise en garde rapprochée, mains circulaires.", ko: "Moa junbi sogi B" },
+        { n: 2, text: "Poinçon renversé vers D.", ko: "Gunnun so bandae dwijibo jirugi" }
+      ]},
+      { id: "po-eun", name: "PO-EUN", group: "black", badge: "1er Dan", moves: 36, diagram: "-", description: "Pseudonyme du poète fidèle Jeong Mong-Ju.", movements: [
+        { n: 1, text: "Posture en L, bloc de garde moyen avec l’avant-bras.", ko: "Niunja so palmok kaunde daebi makgi" },
+        { n: 2, text: "Stance sur une jambe, mains levées.", ko: "Waebal sogi" }
+      ]},
+      { id: "ge-baek", name: "GE-BAEK", group: "black", badge: "1er Dan", moves: 44, diagram: "I", description: "En l’honneur du général Ge-Baek.", movements: [
+        { n: 1, text: "Posture en L, bloc de vérification avec X-couteau-main.", ko: "Niunja so kyocha sonkal momchau makgi" },
+        { n: 2, text: "Coup de pied torsadé bas.", ko: "Najunde bituro chagi" }
+      ]},
+      { id: "eui-am", name: "EUI-AM", group: "black", badge: "2e Dan", moves: 45, diagram: "I", description: "Pseudonyme du patriote Son Byong Hi.", movements: [
+        { n: 1, text: "Bloc interne bas vers D.", ko: "Gunnun so sonkal najunde bandae anuro makgi" },
+        { n: 2, text: "Bloc latéral haut avec l’avant-bras externe.", ko: "Gunnun so bakat palmok nopunde bandae yop makgi" }
+      ]},
+      { id: "choong-jang", name: "CHOONG-JANG", group: "black", badge: "2e Dan", moves: 52, diagram: "I", description: "En l’honneur du général Kim Duk Ryang.", movements: [
+        { n: 1, text: "Bloc latéral avec l’avant-bras interne.", ko: "Annun so orun anpalmok yobap makgi" },
+        { n: 2, text: "Bloc latéral opposé.", ko: "Annun so wen anpalmok yobap makgi" }
+      ]},
+      { id: "juche", name: "JUCHE", group: "black", badge: "2e Dan", moves: 45, diagram: "土", description: "Basé sur la philosophie de l’autonomie de l’homme.", movements: [
+        { n: 1, text: "Posture assise, bloc parallèle interne.", ko: "Annun so anpalmok narani makgi" },
+        { n: 2, text: "Bloc de crochet moyen.", ko: "Sonbadak kaunde golcho makgi" }
+      ]},
+      { id: "sam-il", name: "SAM-IL", group: "black", badge: "3e Dan", moves: 33, diagram: "☲", description: "Commemore l’indépendance du 1er mars 1919.", movements: [
+        { n: 1, text: "Posture en L, bloc de garde moyen.", ko: "Niunja so palmok kaunde daebi makgi" },
+        { n: 2, text: "Bloc double élevé.", ko: "Gunnun so doo palmok nopunde makgi" }
+      ]},
+      { id: "yoo-sin", name: "YOO-SIN", group: "black", badge: "3e Dan", moves: 68, diagram: "I", description: "En l’honneur du général Kim Yoo-Sin.", movements: [
+        { n: 1, text: "Posture assise, coudes ouverts.", ko: "Annun sogi" },
+        { n: 2, text: "Coup oblique vers C.", ko: "Annun so wen joomuk C-bang giokja jirugi" }
+      ]},
+      { id: "choi-yong", name: "CHOI-YONG", group: "black", badge: "3e Dan", moves: 46, diagram: "I", description: "En l’honneur du général Choi Yong.", movements: [
+        { n: 1, text: "Posture arrière droite, bloc de garde moyen.", ko: "Dwitbal so palmok kaunde daebi makgi" },
+        { n: 2, text: "Coup élevé au moyen knuckle main gauche.", ko: "Dwitbal so joongji joomuk nopunde bandae jirugi" }
+      ]},
+      { id: "yong-gae", name: "YONG-GAE", group: "black", badge: "4e Dan", moves: 49, diagram: "I", description: "En l’honneur du général Yeon Gae Somoon.", movements: [
+        { n: 1, text: "Slide vers C, posture en L, bloc bas inverse avec couteau-main.", ko: "Niunja so sonkal dung najunde daebi makgi" },
+        { n: 2, text: "Coup long élevé droit.", ko: "Gunnun so ghin joomuk nopunde bandae jirugi" }
+      ]},
+      { id: "ul-ji", name: "UL-JI", group: "black", badge: "4e Dan", moves: 42, diagram: "乙", description: "En l’honneur du général Ul-Ji Moon Dok.", movements: [
+        { n: 1, text: "Marche vers D, frappe horizontale avec poings latéraux.", ko: "Gunnun so sang yop joomuk soopyong taerigi" },
+        { n: 2, text: "Bloc de pression avec X-poing.", ko: "Gunnun so kyocha joomuk noollo makgi" }
+      ]},
+      { id: "moon-moo", name: "MOON-MOO", group: "black", badge: "4e Dan", moves: 61, diagram: "武", description: "Hommage au trentième roi de Silla.", movements: [
+        { n: 1, text: "Visage vers B, posture préparatoire courbée.", ko: "Guburyo junbi sogi A" },
+        { n: 2, text: "Coup de pied latéral élevé gauche.", ko: "Nopunde yopcha jirugi" }
+      ]},
+      { id: "so-san", name: "SO-SAN", group: "black", badge: "5e Dan", moves: 72, diagram: "I", description: "Pseudonyme du moine guerrier Choi Hyun-Ung.", movements: [
+        { n: 1, text: "Bloc de garde moyen avec l’avant-bras.", ko: "Niunja so palmok kaunde daebi makgi" },
+        { n: 2, text: "Bloc double élevé.", ko: "Gunnun so doo palmok nopunde makgi" }
+      ]},
+      { id: "se-jong", name: "SE-JONG", group: "black", badge: "4e Dan", moves: 24, diagram: "王", description: "En l’honneur du roi Se-Jong et de l’alphabet Hangul.", movements: [
+        { n: 1, text: "Bloc à la main inversée, posture en L.", ko: "Niunja so sonkal kaunde daebi makgi" },
+        { n: 2, text: "Coup de pied latéral moyen.", ko: "Kaunde yopcha jirugi" }
+      ]},
+      { id: "tong-il", name: "TONG-IL", group: "black", badge: "6e Dan", moves: 56, diagram: "|", description: "Symbolise la volonté d’unification de la Corée.", movements: [
+        { n: 1, text: "Bloc de garde moyen, posture en L.", ko: "Niunja so palmok kaunde daebi makgi" },
+        { n: 2, text: "Bloc haut double forearm.", ko: "Gunnun so doo palmok nopunde makgi" }
+      ]},
+      { id: "ko-dang", name: "KO-DANG", group: "black", badge: "Forme classique", moves: 39, diagram: "T", description: "Pseudonyme du patriote Cho Man-Sik.", movements: [
+        { n: 1, text: "Bloc de garde moyen avec couteau-main.", ko: "Niunja so sonkal kaunde daebi makgi" },
+        { n: 2, text: "Bloc de garde moyen avec poing de l’intérieur.", ko: "Niunja so anpalmok kaunde makgi" }
+      ]}
+    ];
+
+    const searchInput = document.getElementById("searchInput");
+    const groupFilter = document.getElementById("groupFilter");
+    const sortSelect = document.getElementById("sortSelect");
+    const patternsGrid = document.getElementById("patternsGrid");
+    const emptyState = document.getElementById("emptyState");
+    const resultCount = document.getElementById("resultCount");
+
+    const detailBadge = document.getElementById("detailBadge");
+    const detailTitle = document.getElementById("detailTitle");
+    const detailText = document.getElementById("detailText");
+    const detailGroup = document.getElementById("detailGroup");
+    const detailMoves = document.getElementById("detailMoves");
+    const detailDiagram = document.getElementById("detailDiagram");
+    const movesList = document.getElementById("movesList");
+
+    let selectedPattern = patterns[0];
+
+    function getGroupLabel(group) {
+      return group === "black" ? "Ceintures noires" : "Ceintures couleur";
+    }
+
+    function renderPatterns() {
+      const query = searchInput.value.trim().toLowerCase();
+      const groupVal = groupFilter.value;
+      let filtered = [...patterns];
+
+      filtered = filtered.filter(pattern => {
+        const matchesText =
+          pattern.name.toLowerCase().includes(query) ||
+          pattern.description.toLowerCase().includes(query) ||
+          pattern.movements.some(move =>
+            move.text.toLowerCase().includes(query) || move.ko.toLowerCase().includes(query)
+          );
+
+        const matchesGroup = groupVal === "all" || pattern.group === groupVal;
+        return matchesText && matchesGroup;
+      });
+
+      if (sortSelect.value === "name") {
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (sortSelect.value === "moves") {
+        filtered.sort((a, b) => b.moves - a.moves);
+      } else {
+        filtered.sort((a, b) => patterns.indexOf(a) - patterns.indexOf(b));
+      }
+
+      patternsGrid.innerHTML = "";
+
+      if (filtered.length === 0) {
+        emptyState.style.display = "block";
+      } else {
+        emptyState.style.display = "none";
+      }
+
+      resultCount.textContent = `${filtered.length} forme(s)`;
+
+      filtered.forEach(pattern => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "pattern-btn" + (selectedPattern && selectedPattern.id === pattern.id ? " active" : "");
+        btn.innerHTML = `
+          <div style="flex:1;">
+            <div class="pattern-meta">
+              <span>${pattern.badge}</span>
+              <span>•</span>
+              <span>${pattern.moves} mvt</span>
+            </div>
+            <span class="pattern-name">${pattern.name}</span>
+          </div>
+          <div class="pattern-meta" style="align-self:flex-start;">
+            <span>${pattern.diagram}</span>
+          </div>
+        `;
+
+        btn.addEventListener("click", () => {
+          selectedPattern = pattern;
+          renderPatterns();
+          renderDetail();
+        });
+
+        patternsGrid.appendChild(btn);
+      });
+    }
+
+    function renderDetail() {
+      detailBadge.textContent = selectedPattern.badge;
+      detailTitle.textContent = selectedPattern.name;
+      detailText.textContent = selectedPattern.description;
+      detailGroup.textContent = getGroupLabel(selectedPattern.group);
+      detailMoves.textContent = selectedPattern.moves;
+      detailDiagram.textContent = selectedPattern.diagram;
+
+      movesList.innerHTML = "";
+
+      selectedPattern.movements.forEach(move => {
+        const div = document.createElement("div");
+        div.className = "move";
+        div.innerHTML = `
+          <div class="move-num">${move.n}</div>
+          <div class="move-text">
+            ${move.text}
+            <span class="ko">(${move.ko})</span>
+          </div>
+        `;
+        movesList.appendChild(div);
+      });
+    }
+
+    searchInput.addEventListener("input", renderPatterns);
+    groupFilter.addEventListener("change", renderPatterns);
+    sortSelect.addEventListener("change", renderPatterns);
+
+    renderPatterns();
+    renderDetail();
+  </script>
+</body>
+</html>
