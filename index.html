@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encyclopédie ITF Taekwon-Do - Compendium Intégral</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        itfblue: '#002855',
+                        itfred: '#C8102E',
+                        itfdark: '#0B0F19',
+                        itfcard: '#161E2E'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0B0F19; }
+        ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    </style>
+</head>
+<body class="bg-itfdark text-slate-100 min-h-screen flex flex-col font-sans selection:bg-itfred selection:text-white" x-data="itfApp()">
+
+    <!-- En-tête Navigation -->
+    <header class="bg-itfcard border-b border-slate-800 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-itfblue to-itfred flex items-center justify-center font-bold text-lg shadow-inner border border-slate-700 shrink-0">
+                    ITF
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        Encyclopédie Taekwon-Do ITF
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-itfred/20 text-itfred border border-itfred/30 font-semibold uppercase">Édition Intégrale (Gup & Dan)</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Général Choi Hong Hi — Compendium Technique Avancé</p>
+                </div>
+            </div>
+
+            <!-- Barre de recherche -->
+            <div class="w-full sm:w-72 relative">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </span>
+                <input type="text" x-model="searchQuery" placeholder="Rechercher tul, posture, technique..." 
+                    class="w-full pl-9 pr-4 py-1.5 text-sm bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-itfred text-white placeholder-slate-500">
+            </div>
+        </div>
+
+        <!-- Onglets -->
+        <nav class="max-w-7xl mx-auto px-4 flex overflow-x-auto space-x-1 border-t border-slate-800/80 text-sm no-scrollbar">
+            <button @click="activeTab = 'tuls'" :class="activeTab === 'tuls' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Les Tuls
+            </button>
+            <button @click="activeTab = 'postures'" :class="activeTab === 'postures' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Postures (Sogi)
+            </button>
+            <button @click="activeTab = 'vitesses'" :class="activeTab === 'vitesses' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Vitesses
+            </button>
+            <button @click="activeTab = 'mains'" :class="activeTab === 'mains' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Techniques de Mains
+            </button>
+            <button @click="activeTab = 'pieds'" :class="activeTab === 'pieds' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Techniques de Pieds
+            </button>
+            <button @click="activeTab = 'biomecanique'" :class="activeTab === 'biomecanique' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Biomécanique
+            </button>
+            <button @click="activeTab = 'theorie'" :class="activeTab === 'theorie' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Théorie de la Puissance
+            </button>
+        </nav>
+    </header>
+
+    <!-- Contenu Principal -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+
+        <!-- ONGLET 1 : LES TULS -->
+        <div x-show="activeTab === 'tuls'">
+            <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Répertoire des Formes (Tuls)</h2>
+                    <p class="text-sm text-slate-400">Cliquez sur n'importe quel Tul pour ouvrir la séquence détaillée de tous ses mouvements.</p>
+                </div>
+                <div class="flex gap-2 bg-slate-900 p-1 rounded-lg border border-slate-800 text-xs">
+                    <button @click="tulFilter = 'all'" :class="tulFilter === 'all' ? 'bg-itfred text-white font-medium' : 'text-slate-400 hover:text-white'" class="px-3 py-1.5 rounded transition">Tous</button>
+                    <button @click="tulFilter = 'gup'" :class="tulFilter === 'gup' ? 'bg-itfred text-white font-medium' : 'text-slate-400 hover:text-white'" class="px-3 py-1.5 rounded transition">Couleurs (Gup)</button>
+                    <button @click="tulFilter = 'dan'" :class="tulFilter === 'dan' ? 'bg-itfred text-white font-medium' : 'text-slate-400 hover:text-white'" class="px-3 py-1.5 rounded transition">Noires (Dan)</button>
+                </div>
+            </div>
+
+            <!-- Grille des Tuls -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <template x-for="tul in filteredTuls" :key="tul.id">
+                    <div @click="selectedTul = tul" class="bg-itfcard border border-slate-800 hover:border-slate-600 rounded-xl p-5 cursor-pointer transition-all hover:shadow-lg flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wide"
+                                      :class="tul.grade.includes('Gup') || tul.grade.includes('Pratique') ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-slate-700/50 text-slate-300 border border-slate-600'">
+                                    <span x-text="tul.grade"></span>
+                                </span>
+                                <span class="text-xs font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+                                    <span x-text="tul.movements"></span> mouvements
+                                </span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-itfred transition-colors" x-text="tul.name"></h3>
+                            <p class="text-xs text-slate-400 mt-1 line-clamp-2" x-text="tul.meaning"></p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex justify-between items-center text-xs text-slate-400">
+                            <span class="font-mono text-slate-500">Prêt : <strong class="text-slate-300 truncate max-w-[150px]" x-text="tul.readyStance"></strong></span>
+                            <span class="text-itfred font-medium flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                Détails &rarr;
+                            </span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- FENÊTRE MODALE DÉTAILS TUL -->
+        <div x-show="selectedTul" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <div @click.outside="selectedTul = null" class="bg-itfcard border border-slate-700 w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+                <div class="p-6 border-b border-slate-800 flex justify-between items-start bg-slate-900/50">
+                    <div>
+                        <div class="flex items-center gap-2 text-xs text-itfred font-semibold uppercase tracking-wider mb-1">
+                            <span x-text="selectedTul?.grade"></span> • <span x-text="selectedTul?.movements"></span> Mouvements
+                        </div>
+                        <h2 class="text-2xl font-bold text-white" x-text="selectedTul?.name"></h2>
+                    </div>
+                    <button @click="selectedTul = null" class="text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition">
+                        ✕
+                    </button>
+                </div>
+                <div class="p-6 overflow-y-auto space-y-6">
+                    <div>
+                        <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Signification historique</h4>
+                        <p class="text-slate-200 text-sm leading-relaxed bg-slate-900/40 p-4 rounded-xl border border-slate-800" x-text="selectedTul?.meaning"></p>
+                    </div>
+                    <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800">
+                        <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Position de départ (Ready Posture)</h4>
+                        <p class="text-base font-medium text-white" x-text="selectedTul?.readyStance"></p>
+                    </div>
+
+                    <!-- LISTE DES MOUVEMENTS DU TUL -->
+                    <div>
+                        <h4 class="text-xs font-semibold text-itfred uppercase tracking-wider mb-3 flex items-center justify-between">
+                            <span>Séquence détaillée des mouvements</span>
+                            <span class="text-slate-400 text-[10px]" x-text="(selectedTul?.techniques?.length || 0) + ' étapes'"></span>
+                        </h4>
+                        <div class="space-y-2 max-h-96 overflow-y-auto pr-1">
+                            <template x-for="(tech, index) in selectedTul?.techniques || []" :key="index">
+                                <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-800/80 flex items-start gap-3">
+                                    <span class="w-7 h-7 rounded-full bg-itfred/20 text-itfred border border-itfred/30 flex items-center justify-center text-xs font-bold shrink-0" x-text="tech.num || (index + 1)"></span>
+                                    <div class="flex-1 text-sm">
+                                        <div class="flex justify-between items-start flex-wrap gap-1">
+                                            <strong class="text-white font-semibold" x-text="tech.action"></strong>
+                                            <span class="text-xs font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20" x-text="tech.stance"></span>
+                                        </div>
+                                        <p class="text-xs text-slate-400 mt-0.5" x-text="tech.details"></p>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-slate-800 bg-slate-900/50 flex justify-end">
+                    <button @click="selectedTul = null" class="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-medium transition">Fermer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ONGLET 2 : POSTURES (SOGI) -->
+        <div x-show="activeTab === 'postures'" x-cloak>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Répertoire des Postures (Sogi)</h2>
+                <p class="text-sm text-slate-400">Les postures fondamentales du Taekwon-Do ITF.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <template x-for="pos in postures" :key="pos.name">
+                    <div class="bg-itfcard border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold text-white" x-text="pos.name"></h3>
+                                <span class="text-xs font-mono text-itfred bg-itfred/10 px-2 py-0.5 rounded border border-itfred/20" x-text="pos.korean"></span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-4" x-text="pos.description"></p>
+                        </div>
+                        <div class="space-y-2 text-xs border-t border-slate-800/80 pt-3">
+                            <div class="flex justify-between"><span class="text-slate-500">Répartition :</span><span class="text-slate-200 font-medium" x-text="pos.weight"></span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Dimensions :</span><span class="text-slate-200 font-medium" x-text="pos.dimensions"></span></div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- ONGLET 3 : VITESSES -->
+        <div x-show="activeTab === 'vitesses'" x-cloak>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Vitesses d'Exécution & Cadences</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <template x-for="v in vitesses" :key="v.title">
+                    <div class="bg-itfcard border border-slate-800 rounded-xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-itfred/20 text-itfred flex items-center justify-center font-bold text-xs border border-itfred/30" x-text="v.badge"></div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-white" x-text="v.title"></h3>
+                                    <span class="text-xs font-mono text-itfred" x-text="v.korean"></span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-300 leading-relaxed mb-4" x-text="v.description"></p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- ONGLET 4 : TECHNIQUES DE MAINS -->
+        <div x-show="activeTab === 'mains'" x-cloak>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Techniques de Mains</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <template x-for="m in techniquesMains" :key="m.name">
+                    <div class="bg-itfcard border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold text-white" x-text="m.name"></h3>
+                                <span class="text-xs font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20" x-text="m.korean"></span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-3" x-text="m.desc"></p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- ONGLET 5 : TECHNIQUES DE PIEDS -->
+        <div x-show="activeTab === 'pieds'" x-cloak>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Techniques de Pieds</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <template x-for="p in techniquesPieds" :key="p.name">
+                    <div class="bg-itfcard border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold text-white" x-text="p.name"></h3>
+                                <span class="text-xs font-mono text-itfred bg-itfred/10 px-2 py-0.5 rounded border border-itfred/20" x-text="p.korean"></span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-3" x-text="p.desc"></p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- ONGLET 6 : BIOMÉCANIQUE -->
+        <div x-show="activeTab === 'biomecanique'" x-cloak>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Biomécanique & Ondes</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <template x-for="b in biomecanique" :key="b.title">
+                    <div class="bg-itfcard border border-slate-800 rounded-xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-2" x-text="b.title"></h3>
+                        <p class="text-sm text-slate-300" x-text="b.content"></p>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- ONGLET 7 : THÉORIE DE LA PUISSANCE -->
+        <div x-show="activeTab === 'theorie'" x-cloak>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Théorie de la Puissance</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <template x-for="th in theoriePuissance" :key="th.title">
+                    <div class="bg-itfcard border border-slate-800 rounded-xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-2" x-text="th.title"></h3>
+                        <p class="text-sm text-slate-300" x-text="th.content"></p>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Pied de page -->
+    <footer class="bg-itfcard border-t border-slate-800 py-4 text-center text-xs text-slate-500 mt-auto">
+        <p>Encyclopédie Numérique du Taekwon-Do ITF • Compendium Complet</p>
+    </footer>
+
+    <!-- Script de l'application -->
+    <script>
+        function itfApp() {
+            return {
+                activeTab: 'tuls',
+                searchQuery: '',
+                tulFilter: 'all',
+                selectedTul: null,
+                
+                tuls: [
+                    { 
+                        id: 1, name: "CHON-JI", grade: "9e Gup", movements: 19, readyStance: "Parallel Ready Stance", 
+                        meaning: "Signifie 'Le Ciel et la Terre'. Interprété comme la création du monde et le début de l'histoire humaine.",
+                        techniques: [
+                            { num: 1, action: "Low block with the left forearm", stance: "Gunnun so palmok najunde makgi", details: "Move the left foot to B forming a left walking stance toward B." },
+                            { num: 2, action: "Middle punch with the right fist", stance: "Gunnun so kaunde jirugi", details: "Move the right foot to B forming a right walking stance toward B." },
+                            { num: 3, action: "Low block with the right forearm", stance: "Gunnun so palmok najunde makgi", details: "Move the right foot to A, turning clockwise to form a right walking stance toward A." },
+                            { num: 4, action: "Middle punch with the left fist", stance: "Gunnun so kaunde jirugi", details: "Move the left foot to A forming a left walking stance toward A." },
+                            { num: 5, action: "Low block with the left forearm", stance: "Gunnun so palmok najunde makgi", details: "Move the left foot to D forming a left walking stance toward D." },
+                            { num: 6, action: "Middle punch with the right fist", stance: "Gunnun so kaunde jirugi", details: "Move the right foot to D forming a right walking stance toward D." },
+                            { num: 7, action: "Low block with the right forearm", stance: "Gunnun so palmok najunde makgi", details: "Move the right foot to C turning clockwise to form a right walking stance toward C." },
+                            { num: 8, action: "Middle punch with the left fist", stance: "Gunnun so kaunde jirugi", details: "Move the left foot to C forming a left walking stance toward C." },
+                            { num: 9, action: "Middle block with the left inner forearm", stance: "Niunja so anpalmok kaunde yop makgi", details: "Move the left foot to A forming a right L-stance toward A." },
+                            { num: 10, action: "Middle punch with the right fist", stance: "Gunnun so kaunde jirugi", details: "Move the right foot to A forming a right walking stance toward A." },
+                            { num: 11, action: "Middle block with the right inner forearm", stance: "Niunja so anpalmok kaunde yop makgi", details: "Move the right foot to B turning clockwise to form a left L-stance toward B." },
+                            { num: 12, action: "Middle punch with the left fist", stance: "Gunnun so kaunde jirugi", details: "Move the left foot to B forming a left walking stance toward B." },
+                            { num: 13, action: "Middle block with the left inner forearm", stance: "Niunja so anpalmok kaunde yop makgi", details: "Move the left foot to C forming a right L-stance toward C." },
+                            { num: 14, action: "Middle punch with the right fist", stance: "Gunnun so kaunde jirugi", details: "Move the right foot to C forming a right walking stance toward C." },
+                            { num: 15, action: "Middle block with the right inner forearm", stance: "Niunja so anpalmok kaunde yop makgi", details: "Move the right foot to D turning clockwise to form a left L-stance toward D." },
+                            { num: 16, action: "Middle punch with the left fist", stance: "Gunnun so kaunde jirugi", details: "Move the left foot to D forming a left walking stance toward D." },
+                            { num: 17, action: "Middle punch with the right fist", stance: "Gunnun so kaunde jirugi", details: "Move the right foot to D forming a right walking stance toward D." },
+                            { num: 18, action: "Middle punch with the left fist", stance: "Gunnun so kaunde jirugi", details: "Move the right foot to C forming a left walking stance toward D." },
+                            { num: 19, action: "Middle punch with the right fist", stance: "Gunnun so kaunde jirugi", details: "Move the left foot to C forming a right walking stance toward D." }
+                        ]
+                    },
+                    { 
+                        id: 2, name: "DAN-GUN", grade: "8e Gup", movements: 21, readyStance: "Parallel Ready Stance", 
+                        meaning: "Nommé d'après le saint Dan-Gun, le fondateur légendaire de la Corée en 2333 av. J.-C.",
+                        techniques: [
+                            { num: 1, action: "Middle guarding block with a knife-hand", stance: "Niunja so sonkal kaunde daebi makgi", details: "Move the left foot to B forming a right L-stance toward B." },
+                            { num: 2, action: "High punch with the right fist", stance: "Gunnun so nopunde jirugi", details: "Move the right foot to B forming a right walking stance toward B." },
+                            { num: 3, action: "Middle guarding block with a knife-hand", stance: "Niunja so sonkal kaunde daebi makgi", details: "Move the right foot to A turning clockwise to form a left L-stance toward A." },
+                            { num: 4, action: "High punch with the left fist", stance: "Gunnun so nopunde jirugi", details: "Move the left foot to A forming a left walking stance toward A." },
+                            { num: 5, action: "Low block with the left forearm", stance: "Gunnun so palmok najunde makgi", details: "Move the left foot to D forming a left walking stance toward D." },
+                            { num: 6, action: "High punch with the right fist", stance: "Gunnun so nopunde jirugi", details: "Move the right foot to D forming a right walking stance toward D." },
+                            { num: 7, action: "High punch with the left fist", stance: "Gunnun so nopunde jirugi", details: "Move the left foot to D forming a left walking stance toward D." },
+                            { num: 8, action: "High punch with the right fist", stance: "Gunnun so nopunde jirugi", details: "Move the right foot to D forming a right walking stance toward D." },
+                            { num: 9, action: "Twin forearm block", stance: "Niunja so sang palmok makgi", details: "Move the left foot to E, turning counter clockwise to form a right L-stance toward E." },
+                            { num: 10, action: "High punch with the right fist", stance: "Gunnun so nopunde jirugi", details: "Move the right foot to E forming a right walking stance toward E." },
+                            { num: 11, action: "Twin forearm block", stance: "Niunja so sang palmok makgi", details: "Move the right foot to F turning clockwise to form a left L-stance toward F." },
+                            { num: 12, action: "High punch with the left fist", stance: "Gunnun so nopunde jirugi", details: "Move the left foot to F forming a left walking stance toward F." },
+                            { num: 13, action: "Low block with the left forearm", stance: "Gunnun so palmok najunde makgi", details: "Move the left foot to C forming a left walking stance toward C." },
+                            { num: 14, action: "Rising block with the left forearm", stance: "Gunnun so palmok chookyo makgi", details: "Continuous motion in left walking stance toward C." },
+                            { num: 15, action: "Rising block with the right forearm", stance: "Gunnun so palmok chookyo makgi", details: "Move the right foot to C forming a right walking stance." },
+                            { num: 16, action: "Rising block with the left forearm", stance: "Gunnun so palmok chookyo makgi", details: "Move the left foot to C forming a left walking stance." },
+                            { num: 17, action: "Rising block with the right forearm", stance: "Gunnun so palmok chookyo makgi", details: "Move the right foot to C forming a right walking stance." },
+                            { num: 18, action: "Middle outward strike with the left knife-hand", stance: "Niunja so sonkal kaunde bakuro taerigi", details: "Move the left foot to B turning counter clockwise to form a right L-stance." },
+                            { num: 19, action: "High punch with the right fist", stance: "Gunnun so nopunde jirugi", details: "Move the right foot to B forming a right walking stance." },
+                            { num: 20, action: "Middle outward strike with the right knife-hand", stance: "Niunja so sonkal kaunde bakuro taerigi", details: "Move the right foot to A turning clockwise to form a left L-stance." },
+                            { num: 21, action: "High punch with the left fist", stance: "Gunnun so nopunde jirugi", details: "Move the left foot to A forming a left walking stance." }
+                        ]
+                    },
+                    { 
+                        id: 3, name: "DO-SAN", grade: "7e Gup", movements: 24, readyStance: "Close Ready Stance B", 
+                        meaning: "Pseudonyme du patriote Ahn Chang-Ho (1876-1938).",
+                        techniques: [
+                            { num: 1, action: "High side block with the left outer forearm", stance: "Gunnun so bakat palmok nopunde yop makgi", details: "Move the left foot to B, forming a left walking stance toward B." },
+                            { num: 2, action: "Middle punch with the right fist", stance: "Gunnun so kaunde bandae jirugi", details: "Execute while maintaining a left walking stance." },
+                            { num: 3, action: "High side block with the right outer forearm", stance: "Gunnun so bakat palmok nopunde yop makgi", details: "Turn clockwise to form a right walking stance toward A." },
+                            { num: 4, action: "Middle punch with the left fist", stance: "Gunnun so kaunde bandae jirugi", details: "Maintain right walking stance." },
+                            { num: 5, action: "Middle guarding block with a knife-hand", stance: "Niunja so sonkal kaunde daebi makgi", details: "Move the left foot to D, forming a right L-stance toward D." },
+                            { num: 6, action: "Middle thrust with the right straight fingertip", stance: "Gunnun so sun sonkut kaunde tulgi", details: "Move the right foot to D forming a right walking stance." },
+                            { num: 7, action: "High side strike with the left back fist", stance: "Jappyosul tae, gunnun so dung joomuk nopunde yop taerigi", details: "Twist right knife-hand and move left foot to D." },
+                            { num: 8, action: "High side strike with the right back fist", stance: "Gunnun so dung joomuk nopunde yop taerigi", details: "Move the right foot to D forming a right walking stance." },
+                            { num: 9, action: "High side block with the left outer forearm", stance: "Gunnun so bakat palmok nopunde yop makgi", details: "Move the left foot to E forming a left walking stance." },
+                            { num: 10, action: "Middle punch with the right fist", stance: "Gunnun so kaunde bandae jirugi", details: "Maintain left walking stance toward E." },
+                            { num: 11, action: "High side block with the right outer forearm", stance: "Gunnun so bakat palmok nopunde yop makgi", details: "Turn clockwise to form a right walking stance toward F." },
+                            { num: 12, action: "Middle punch with the left fist", stance: "Gunnun so kaunde bandae jirugi", details: "Maintain right walking stance toward F." },
+                            { num: 13, action: "High wedging block with the outer forearm", stance: "Gunnun so bakat palmok nopunde hechyo makgi", details: "Move the left foot to CE forming a left walking stance." },
+                            { num: 14, action: "Middle front snap kick with the right foot", stance: "Kaunde apcha busigi", details: "Execute front snap kick keeping hand position." },
+                            { num: 15, action: "Middle punch with the right fist", stance: "Gunnun so kaunde jirugi", details: "Lower right foot forming a right walking stance." },
+                            { num: 16, action: "Middle punch with the left fist", stance: "Gunnun so kaunde bandae jirugi", details: "Fast motion in right walking stance." },
+                            { num: 17, action: "High wedging block with the outer forearm", stance: "Gunnun so bakat palmok nopunde hechyo makgi", details: "Move right foot to CF forming a right walking stance." },
+                            { num: 18, action: "Middle front snap kick with the left foot", stance: "Kaunde apcha busigi", details: "Execute front snap kick." },
+                            { num: 19, action: "Middle punch with the left fist", stance: "Gunnun so kaunde jirugi", details: "Lower left foot forming a left walking stance." },
+                            { num: 20, action: "Middle punch with the right fist", stance: "Gunnun so kaunde jirugi", details: "Fast motion in left walking stance." },
+                            { num: 21, action: "Rising block with the left forearm", stance: "Gunnun so palmok chookyo makgi", details: "Move left foot to C forming a left walking stance." },
+                            { num: 22, action: "Rising block with the right forearm", stance: "Gunnun so palmok chookyo makgi", details: "Move right foot to C forming a right walking stance." },
+                            { num: 23, action: "Middle side strike with the left knife-hand", stance: "Annun so wen sonkal kaunde yop taerigi", details: "Move left foot to B to form a sitting stance toward D." },
+                            { num: 24, action: "Middle side strike with the right knife-hand", stance: "Annun so orun sonkal kaunde yop taerigi", details: "Move right foot to A forming a sitting stance toward D." }
+                        ]
+                    },
+                    {
+                        id: 4, name: "WON-HYO", grade: "6e Gup", movements: 28, readyStance: "Close Ready Stance A",
+                        meaning: "Le moine éminent qui introduisit le Bouddhisme dans la dynastie Silla en l'an 686 ap. J.-C.",
+                        techniques: [
+                            { num: 1, action: "Twin forearm block", stance: "Niunja so sang palmok makgi", details: "Move the left foot to B forming a right L-stance toward B." },
+                            { num: 2, action: "High inward strike with the right knife-hand", stance: "Niunja so sonkal nopunde anuro taerigi", details: "Execute while maintaining a right L-stance." },
+                            { num: 3, action: "Middle punch with the left fist", stance: "Gojung so kaunde yop jirugi", details: "Form a left fixed stance toward B, slipping left foot." },
+                            { num: 4, action: "Twin forearm block", stance: "Niunja so sang palmok makgi", details: "Move right foot to A, forming a left L-stance toward A." },
+                            { num: 5, action: "High inward strike with the left knife-hand", stance: "Niunja so sonkal nopunde anuro taerigi", details: "Maintain left L-stance toward A." },
+                            { num: 6, action: "Middle punch with the right fist", stance: "Gojung so kaunde yop jirugi", details: "Form a right fixed stance toward A, slipping right foot." },
+                            { num: 7, action: "Bending ready stance A toward D", stance: "guburyo junbi sogi A", details: "Turn face toward D." },
+                            { num: 8, action: "Middle side piercing kick with the left foot", stance: "Kaunde yopcha jirugi", details: "Execute side piercing kick to D." },
+                            { num: 9, action: "Middle guarding block with a knife-hand", stance: "Niunja so sonkal kaunde daebi makgi", details: "Lower left foot to D forming a right L-stance." },
+                            { num: 10, action: "Middle guarding block with a knife-hand", stance: "Niunja so sonkal kaunde daebi makgi", details: "Move right foot to D forming a left L-stance." },
+                            { num: 11, action: "Middle guarding block with a knife-hand", stance: "Niunja so sonkal kaunde daebi makgi", details: "Move left foot to D forming a right L-stance." },
+                            { num: 12, action: "Middle thrust with the right straight fingertip", stance: "Gunnun so sun sonkut kaunde tulgi", details: "Move right foot to D forming a right walking stance." },
+                            { num: 13, action: "Twin forearm block", stance: "Niunja so sang palmok makgi", details: "Move left foot to E turning counter-clockwise to form a right L-stance." },
+                            { num: 14, action: "High inward strike with the right knife-hand", stance: "Niunja so sonkal nopunde anuro taerigi", details: "Maintain right L-stance toward E." },
+                            { num: 15, action: "Middle punch with the left fist", stance: "Gojung so kaunde yop jirugi", details: "Form left fixed stance toward E." },
+                            { num: 16, action: "Twin forearm block", stance: "Niunja so sang palmok makgi", details: "Move right foot to F forming a left L-stance." },
+                            { num: 17, action: "High inward strike with the left knife-hand", stance: "Niunja so sonkal nopunde anuro taerigi", details: "Maintain left L-stance toward F." },
+                            { num: 18, action: "Middle punch with the right fist", stance: "Gojung so kaunde yop jirugi", details: "Form right fixed stance toward F." },
+                            { num: 19, action: "Circular block with the right inner forearm", stance: "Gunnun so anpalmok dollimyo makgi", details: "Move left foot to C forming a left walking stance toward C." },
+                            { num: 20, action: "Low front snap kick with the right foot", stance: "Najunde apcha busigi", details: "Execute low front snap kick to C." },
+                            { num: 21, action: "Middle punch with the left fist", stance: "Gunnun so kaunde bandae jirugi", details: "Lower right foot to C forming a right walking stance." },
+                            { num: 22, action: "Circular block with the left inner forearm", stance: "Gunnun so anpalmok dollimyo makgi", details: "Maintain right walking stance toward C." },
+                            { num: 23, action: "Low front snap kick with the left foot", stance: "Najunde apcha busigi", details: "Execute low front snap kick to C." },
+                            { num: 24, action: "Middle punch with the right fist", stance: "Gunnun so kaunde bandae jirugi", details: "Lower left foot forming a left walking stance." },
+                            { num: 25, action: "Bending ready stance A toward C", stance: "Guburyo junbi sogi A", details: "Turn face toward C." },
+                            { num: 26, action: "Middle side piercing kick with the right foot", stance: "Kaunde yopcha jirugi", details: "Execute side piercing kick to C." },
+                            { num: 27, action: "Middle guarding block with the forearm", stance: "Niunja so palmok kaunde daebi makgi", details: "Lower right foot on line CD and move left foot to B forming a right L-stance." },
+                            { num: 28, action: "Middle guarding block with the forearm", stance: "Niunja so palmok kaunde daebi makgi", details: "Move right foot to A forming a left L-stance." }
+                        ]
+                    },
+                    {
+                        id: 5, name: "YUL-GOK", grade: "5e Gup", movements: 38, readyStance: "Parallel Ready Stance",
+                        meaning: "Pseudonyme du philosophe Yi I (1536-1584). Les 38 mouvements représentent la latitude de sa naissance (38° N).",
+                        techniques: [
+                            { num: 1, action: "Extend left fist to D horizontally", stance: "Annun sogi", details: "Move left foot to B forming a sitting stance toward D." },
+                            { num: 2, action: "Middle punch with the right fist", stance: "Annun so orun joomuk kaunde ap jirugi", details: "Fast motion in sitting stance." },
+                            { num: 3, action: "Middle punch with the left fist", stance: "Annun so wen joomuk kaunde ap jirugi", details: "Fast motion in sitting stance." },
+                            { num: 4, action: "Extend right fist to D horizontally", stance: "Annun sogi", details: "Move right foot to A forming a sitting stance toward D." },
+                            { num: 5, action: "Middle punch with the left fist", stance: "Annun so wen joomuk kaunde ap jirugi", details: "Fast motion in sitting stance." },
+                            { num: 6, action: "Middle punch with the right fist", stance: "Annun so orun joomuk kaunde ap jirugi", details: "Fast motion in sitting stance." },
+                            { num: 7, action: "Middle side block with the right inner forearm", stance: "Gunnun so anpalmok kaunde yop makgi", details: "Move right foot to AD forming a right walking stance." },
+                            { num: 8, action: "Low front snap kick with the left foot", stance: "Najunde apcha busigi", details: "Execute low front snap kick to AD." },
+                            { num: 9, action: "Middle punch with the left fist", stance: "Gunnun so kaunde jirugi", details: "Lower left foot to AD forming a left walking stance." },
+                            { num: 10, action: "Middle punch with the right fist", stance: "Gunnun so kaunde bandae jirugi", details: "Fast motion in left walking stance." },
+                            { num: 11, action: "Middle side block with the left inner forearm", stance: "Gunnun so anpalmok kaunde yop makgi", details: "Move left foot to BD forming a left walking stance." },
+                            { num: 12, action: "Low front snap kick with the right foot", stance: "Najunde apcha busigi", details: "Execute low front snap kick to BD." },
+                            { num: 13, action: "Middle punch with the right fist", stance: "Gunnun so kaunde jirugi", details: "Lower right foot to BD forming a right walking stance." },
+                            { num: 14, action: "Middle punch with the left fist", stance: "Gunnun so kaunde bandae jirugi", details: "Fast motion in right walking stance." },
+                            { num: 15, action: "Middle hooking block with the right palm", stance: "Gunnun so sonbadak kaunde golcho makgi", details: "Execute middle hooking block to D forming a right walking stance." },
+                            { num: 16, action: "Middle hooking block with the left palm", stance: "Gunnun so sonbadak kaunde bandae golcho makgi", details: "Connecting motion in right walking stance." },
+                            { num: 17, action: "Middle punch with the right fist", stance: "Gunnun so kaunde jirugi", details: "Connecting motion in right walking stance." },
+                            { num: 18, action: "Middle hooking block with the left palm", stance: "Gunnun so sonbadak kaunde golcho makgi", details: "Move left foot to D forming a left walking stance." },
+                            { num: 19, action: "Middle hooking block with the right palm", stance: "Gunnun so sonbadak kaunde bandae golcho makgi", details: "Connecting motion in left walking stance." },
+                            { num: 20, action: "Middle punch with the left fist", stance: "Gunnun so kaunde jirugi", details: "Connecting motion in left walking stance." },
+                            { num: 21, action: "Middle punch with the right fist", stance: "Gunnun so kaunde jirugi", details: "Move right foot to D forming a right walking stance." },
+                            { num: 22, action: "Bending ready stance A toward D", stance: "Guburyo junbi sogi A", details: "Turn face toward D." },
+                            { num: 23, action: "Middle side piercing kick with the left foot", stance: "Kaunde yopcha jirugi", details: "Execute side piercing kick to D." },
+                            { num: 24, action: "Strike left palm with right front elbow", stance: "Gunnun so ap palkup bandae taerigi", details: "Lower left foot to D forming a left walking stance." },
+                            { num: 25, action: "Bending ready stance A toward C", stance: "Guburyo junbi sogi A", details: "Turn face toward C." },
+                            { num: 26, action: "Middle side piercing kick with the right foot", stance: "Kaunde yopcha jirugi", details: "Execute side piercing kick to C." },
+                            { num: 27, action: "Strike right palm with left front elbow", stance: "Gunnun so ap palkup bandae taerigi", details: "Lower right foot to C forming a right walking stance." },
+                            { num: 28, action: "Twin knife-hand block", stance: "Niunja so sang sonkal makgi", details: "Move left foot to E forming a right L-stance." },
+                            { num: 29, action: "Middle thrust with the right straight fingertip", stance: "Gunnun so sun sonkut kaunde tulgi", details: "Move right foot to E forming a right walking stance." },
+                            { num: 30, action: "Twin knife-hand block", stance: "Niunja so sang sonkal makgi", details: "Move right foot to F turning clockwise to form a left L-stance." },
+                            { num: 31, action: "Middle thrust with the left straight fingertip", stance: "Gunnun so sun sonkut kaunde tulgi", details: "Move left foot to F forming a left walking stance." },
+                            { num: 32, action: "High side block with the left outer forearm", stance: "Gunnun so bakat palmok nopunde yop makgi", details: "Move left foot to C forming a left walking stance." },
+                            { num: 33, action: "Middle punch with the right fist", stance: "Gunnun so kaunde bandae jirugi", details: "Maintain left walking stance." },
+                            { num: 34, action: "High side block with the right outer forearm", stance: "Gunnun so bakat palmok nopunde yop makgi", details: "Move right foot to C forming a right walking stance." },
+                            { num: 35, action: "Middle punch with the left fist", stance: "Gunnun so kaunde bandae jirugi", details: "Maintain right walking stance." },
+                            { num: 36, action: "High side strike with the left back fist", stance: "Twigi, wen kyocha so dung joomuk nopunde yop taerigi", details: "Jump to C forming a left X-stance toward B." },
+                            { num: 37, action: "High block with the right double forearm", stance: "Gunnun so doo palmok nopunde makgi", details: "Move right foot to A forming a right walking stance." },
+                            { num: 38, action: "High block with the left double forearm", stance: "Gunnun so doo palmok nopunde makgi", details: "Move left foot to B forming a left walking stance." }
+                        ]
+                    },
+                    {
+                        id: 6, name: "JOONG-GUN", grade: "4e Gup", movements: 32, readyStance: "Close Ready Stance B",
+                        meaning: "Nommé d'après le patriote Ahn Joong-Gun. Les 32 mouvements représentent son âge lors de son exécution en 1910.",
+                        techniques: [
+                            { num: 1, action: "Middle block with the left reverse knife-hand", stance: "Niunja so sonkal dung kaunde makgi", details: "Move left foot to B forming a right L-stance." },
+                            { num: 2, action: "Low side front snap kick with the left foot", stance: "Najunde yobap cha busigi", details: "Execute low side front snap kick to B." },
+                            { num: 3, action: "Upward block with a right palm", stance: "Dwitbal so sonbadak bandae ollyo makgi", details: "Lower left foot and move right foot to B forming a left rear foot stance." },
+                            { num: 4, action: "Middle block with a right reverse knife-hand", stance: "Niunja so sonkal dung kaunde makgi", details: "Move right foot to A forming a left L-stance." },
+                            { num: 5, action: "Low side front snap kick with the right foot", stance: "Najunde yobap cha busigi", details: "Execute low side front snap kick to A." },
+                            { num: 6, action: "Upward block with a left palm", stance: "Dwitbal so sonbadak bandae ollyo makgi", details: "Lower right foot and move left foot to A forming a right rear foot stance." },
+                            { num: 7, action: "Middle guarding block with a knife-hand", stance: "Niunja so sonkal kaunde daebi makgi", details: "Move left foot to D forming a right L-stance." },
+                            { num: 8, action: "Right upper elbow strike", stance: "Gunnun so wi palkup bandae taerigi", details: "Form a left walking stance toward D." },
+                            { num: 9, action: "Middle guarding block with a knife-hand", stance: "Niunja so sonkal kaunde daebi makgi", details: "Move right foot to D forming a left L-stance." },
+                            { num: 10, action: "Left upper elbow strike", stance: "Gunnun so wi palkup bandae taerigi", details: "Form a right walking stance toward D." },
+                            { num: 11, action: "High vertical punch with a twin fist", stance: "Gunnun so sang joomuk nopunde sewo jirugi", details: "Move left foot to D forming a left walking stance." },
+                            { num: 12, action: "Upset punch with a twin fist", stance: "Gunnun so sang joomuk dwijibo jirugi", details: "Move right foot to D forming a right walking stance." },
+                            { num: 13, action: "Rising block with an X-fist", stance: "Gunnun so kyocha joomuk chookyo makgi", details: "Move right foot on line CD and turn counter-clockwise to form a left walking stance toward C." },
+                            { num: 14, action: "High side strike with the left back fist", stance: "Niunja so dung joomuk nopunde yop taerigi", details: "Move left foot to E forming a right L-stance." },
+                            { num: 15, action: "Twist left fist and form left walking stance", stance: "Gunnun so jappyosul tae", details: "Twist left fist and form left walking stance toward E." },
+                            { num: 16, action: "High punch with the right fist", stance: "gunnun so nopunde bandae jirugi", details: "Fast motion in left walking stance toward E." },
+                            { num: 17, action: "High side strike with a right back fist", stance: "Niunja so dung joomuk nopunde yop taerigi", details: "Move right foot to F forming a left L-stance." },
+                            { num: 18, action: "Twist right fist and form right walking stance", stance: "Gunnun so jappyosul tae", details: "Twist right fist and form right walking stance toward F." },
+                            { num: 19, action: "High punch with the left fist", stance: "Gunnun so nopunde bandae jirugi", details: "Fast motion in right walking stance toward F." },
+                            { num: 20, action: "High block with a left double forearm", stance: "Gunnun so doo palmok nopunde makgi", details: "Move left foot to C forming a left walking stance." },
+                            { num: 21, action: "Middle punch with the left fist", stance: "Niunja so kaunde yop jirugi", details: "Form a right L-stance toward C, pulling left foot." },
+                            { num: 22, action: "Middle side piercing kick with the right foot", stance: "Kaunde yopcha jirugi", details: "Execute side piercing kick to C." },
+                            { num: 23, action: "High block with the right double forearm", stance: "Gunnun so doo palmok nopunde makgi", details: "Lower right foot to C forming a right walking stance." },
+                            { num: 24, action: "Middle punch with the right fist", stance: "Niunja so kaunde yop jirugi", details: "Form a left L-stance toward C, pulling right foot." },
+                            { num: 25, action: "Middle side piercing kick with the left foot", stance: "Kaunde yopcha jirugi", details: "Execute side piercing kick to C." },
+                            { num: 26, action: "Middle guarding block with the forearm", stance: "Niunja so palmok kaunde daebi makgi", details: "Lower left foot to C forming a right L-stance." },
+                            { num: 27, action: "Pressing block with the right palm", stance: "Nachuo so sonbadak bandae noollo makgi", details: "Slow motion forming a left low stance toward C." },
+                            { num: 28, action: "Middle guarding block with the forearm", stance: "Niunja so palmok kaunde daebi makgi", details: "Move right foot to C forming a left L-stance." },
+                            { num: 29, action: "Pressing block with the left palm", stance: "Nachuo so sonbadak bandae noollo makgi", details: "Slow motion forming a right low stance toward C." },
+                            { num: 30, action: "Angle punch with the right fist", stance: "Moa so orun giokja jirugi", details: "Slow motion forming a close stance toward A." },
+                            { num: 31, action: "U-shape block", stance: "Gojung so digutja makgi", details: "Move right foot to A forming a right fixed stance." },
+                            { num: 32, action: "U-shape block", stance: "Gojung so digutja makgi", details: "Move left foot to B forming a left fixed stance." }
+                        ]
+                    },
+                    {
+                        id: 7, name: "KWANG-GAE", grade: "1er Dan", movements: 39, readyStance: "Parallel Stance with a Heaven Hand",
+                        meaning: "Nommé d'après le roi Kwang-Gae-Toh-Wang qui regagna tous les territoires perdus incluant la plus grande partie de la Mandchourie.",
+                        techniques: [
+                            { num: 1, action: "Moa junbi sogi B", stance: "Moa junbi sogi B", details: "Bring the left foot to the right foot, forming a close ready stance B toward D, bringing both hands in a circular motion." },
+                            { num: 2, action: "Upset punch with the right fist", stance: "Gunnun so bandae dwijibo jirugi", details: "Move the left foot to D, forming a left walking stance toward D while executing an upset punch to D with the right fist. (Slow motion)" },
+                            { num: 3, action: "Upset punch with the left fist", stance: "Gunnun so bandae dwijibo jirugi", details: "Move the right foot to D, forming a right walking stance toward D while executing an upset punch to D with the left fist. (Slow motion)" },
+                            { num: 4, action: "High hooking block with the right palm", stance: "Gunnun so sonbadak nopunde golcho makgi", details: "Move the left foot to the side front of the right foot, and then move the right foot to D, forming a right walking stance toward D, at the same time executing a high hooking block to D with the right palm. (Double stepping motion)" },
+                            { num: 5, action: "Low guarding block with a knife-hand", stance: "Niunja so sonkal najunde daebi makgi", details: "Move the right foot to C in a sliding motion to form a right L-stance toward D, at the same time executing a low guarding block to D with a knife-hand." },
+                            { num: 6, action: "High hooking block with the left palm", stance: "Gunnun so sonbadak nopunde golcho makgi", details: "Move the right foot to the side front of the left foot and then move the left foot to D, forming a left walking stance toward D while executing a high hooking block to D with the left palm. (Double stepping motion)" },
+                            { num: 7, action: "Low guarding block with a knife-hand", stance: "Niunja so sonkal najunde daebi makgi", details: "Move the left foot to C in a sliding motion forming a left L-stance toward D while executing a low guarding block to D with a knife-hand." },
+                            { num: 8, action: "High guarding block with a knife-hand", stance: "Dwitbal so sonkal nopunde daebi makgi", details: "Move the left foot to D, forming a right rear foot stance toward D while executing a high guarding block to D with a knife-hand." },
+                            { num: 9, action: "High guarding block with a knife-hand", stance: "Dwitbal so sonkal nopunde daebi makgi", details: "Move the right foot to D, forming a left rear foot stance toward D while executing a high guarding block to D with a knife-hand." },
+                            { num: 10, action: "Upward block with the right palm", stance: "Gunnun so sonbadak bandae ollyo makgi", details: "Move the left foot to the side front of the right foot and then turn counter-clockwise, pivoting with the left foot, to form a left walking stance toward C while executing an upward block to C with the right palm. (Slow motion)" },
+                            { num: 11, action: "Upward block with the left palm", stance: "Gunnun so sonbadak bandae ollyo makgi", details: "Move the right foot to C, forming a right walking stance toward C while executing an upward block to C with the left palm. (Slow motion)" },
+                            { num: 12, action: "Low front block with the right knife-hand", stance: "Moa so orun sonkal najunde ap makgi", details: "Execute a low front block with the right knife-hand in a circular motion, hitting the left palm while bringing the left foot to the right foot to form a close stance toward C." },
+                            { num: 13, action: "Pressing kick with the left foot", stance: "Bakuro noollo chagi", details: "Execute a pressing kick to E with the left foot, keeping the position of the hands as they were in 12." },
+                            { num: 14, action: "Middle side piercing kick with the left foot", stance: "Kaunde yopcha jirugi", details: "Execute a middle side piercing kick to E with the left foot, keeping the position of the hands as they were in 13. (Consecutive kick)" },
+                            { num: 15, action: "High inward strike with the right knife-hand", stance: "Niunja so sonkal nopunde anuro taerigi", details: "Lower the left foot to E, forming a right L-stance toward E while executing a high inward strike to E with the right knife-hand and bringing the left side fist in front of the right shoulder." },
+                            { num: 16, action: "Downward strike with the left side fist", stance: "Moa so wen yop joomuk naeryo taerigi", details: "Execute a downward strike to E with the left side fist while forming a close stance toward C, pulling the left foot to the right foot." },
+                            { num: 17, action: "Pressing kick with the right foot", stance: "Bakuro noollo chagi", details: "Execute a pressing kick to F with the right foot, keeping the position of the hands as they were in 16." },
+                            { num: 18, action: "Middle side piercing kick with the right foot", stance: "Kaunde yopcha jirugi", details: "Execute a middle side piercing kick to F with the right foot, keeping the position of the hands as they were in 17. (Consecutive kick)" },
+                            { num: 19, action: "High inward strike with the knife-hand", stance: "Niunja so sonkal nopunde anuro taerigi", details: "Lower the right foot to F, forming a left L-stance toward F while executing a high inward strike to F with the knife-hand and bringing the right side fist in front of the left shoulder." },
+                            { num: 20, action: "Downward strike with the right side fist", stance: "Moa so orun yop joomuk naeryo taerigi", details: "Execute a downward strike to F with the right side fist while forming a close stance toward C, pulling the right foot to the left foot." },
+                            { num: 21, action: "Pressing block with the right palm", stance: "Nachuo so sonbadak bandae noollo makgi", details: "Move the left foot to C, forming a left low stance toward C while executing a pressing block with the right palm. (Slow motion)" },
+                            { num: 22, action: "Pressing block with the left palm", stance: "Nachuo so sonbadak bandae noollo makgi", details: "Move the right foot to C, forming a right low stance toward C while executing a pressing block with the left palm. (Slow motion)" },
+                            { num: 23, action: "High side strike with the right back fist", stance: "Annun so orun dung joomuk nopunde yop taerigi", details: "Move the right foot to D in a stamping motion to form a sitting stance toward F while executing a high side strike to D with the right back fist." },
+                            { num: 24, action: "Middle block with the right double forearm", stance: "Gunnun so doo palmok kaunde makgi", details: "Execute a middle block to D with the right double forearm while forming a right walking stance toward D, pivoting with the left foot." },
+                            { num: 25, action: "Low reverse block with the left forearm", stance: "Gunnun so palmok najunde bandae makgi", details: "Execute a low reverse block to D with the left forearm while shifting to C, maintaining a right walking stance toward D, keeping the right hand position." },
+                            { num: 26, action: "High thrust with the right flat fingertip", stance: "Nachuo so opun sonkut nopunde tulgi", details: "Execute a high thrust to D with the right flat fingertip while forming a right low stance toward D, slipping the right foot to D. (Slow motion)" },
+                            { num: 27, action: "High side strike with the left back fist", stance: "Annun so wen dung joomuk nopunde yop taerigi", details: "Move the left foot on line CD in a stamping motion to form a sitting stance toward F while executing a high side strike to C with the left back fist." },
+                            { num: 28, action: "Middle block with the left double forearm", stance: "Gunnun so doo palmok kaunde makgi", details: "Execute a middle block to C with the left double forearm while forming a left walking stance toward C, pivoting with the left foot." },
+                            { num: 29, action: "Low reverse block with the right forearm", stance: "Gunnun so palmok najunde bandae makgi", details: "Execute a low reverse block to C with the right forearm while shifting to D, maintaining a left walking stance toward C." },
+                            { num: 30, action: "High thrust with the left flat fingertip", stance: "Nachuo so opun sonkut nopunde tulgi", details: "Execute a high thrust to C with the left flat fingertip while forming a left low stance toward C, slipping the left foot to C. (Slow motion)" },
+                            { num: 31, action: "High vertical punch with a twin fist", stance: "Gunnun so sang joomuk nopunde sewo jirugi", details: "Move the right foot to C in a stamping motion, forming a right walking stance toward C while executing a high vertical punch to C with a twin fist." },
+                            { num: 32, action: "Upset punch with a twin fist", stance: "Gunnun so sang joomuk dwijibo jirugi", details: "Move the left foot to A in a stamping motion, forming a left walking stance toward A while executing an upset punch to A with a twin fist." },
+                            { num: 33, action: "Middle front snap kick with the right foot", stance: "Kaunde apcha busigi", details: "Execute a middle front snap kick to A with the right foot, keeping hand position." },
+                            { num: 34, action: "Middle guarding block with a knife-hand", stance: "Niunja so sonkal kaunde daebi makgi", details: "Lower the right foot to the left foot, and then move the left foot to A to form a left L-stance toward B while executing a middle guarding block to B with a knife-hand." },
+                            { num: 35, action: "High punch with the left fist", stance: "Gunnun so nopunde jirugi", details: "Move the left foot to B, forming a left walking stance toward B while executing a high punch to B with the left fist." },
+                            { num: 36, action: "Upset punch with a twin fist", stance: "Gunnun so sang joomuk dwijibo jirugi", details: "Move the right foot to B in stamping motion, forming a right walking stance toward B while executing an upset punch to B with a twin fist." },
+                            { num: 37, action: "Middle front snap kick with the left foot", stance: "Kaunde apcha busigi", details: "Execute a middle front snap kick to B with the left foot, keeping hand position." },
+                            { num: 38, action: "Middle guarding block with a knife-hand", stance: "Niunja so sonkal kaunde daebi makgi", details: "Lower the left foot to the right foot, and then move the right foot to B to form a right L-stance toward A at the same time executing a middle guarding block to A with a knife-hand." },
+                            { num: 39, action: "High punch with the right fist", stance: "Gunnun so nopunde jirugi", details: "Move the right foot to A, forming a right walking stance toward A while executing a high punch to A with the right fist." }
+                        ]
+                    }
+                ],
+
+                postures: [
+                    { name: "Walking Stance", korean: "Gunnun Sogi", description: "60% weight on rear leg, 40% on front leg.", weight: "60% arrière / 40% avant", dimensions: "Shoulder width / Length 1.5" },
+                    { name: "L-Stance", korean: "Niunja Sogi", description: "70% weight on rear leg, 30% on front leg.", weight: "70% arrière / 30% avant", dimensions: "Length 1.5 shoulder width" },
+                    { name: "Sitting Stance", korean: "Annun Sogi", description: "50% weight on each leg, facing side or front.", weight: "50% / 50%", dimensions: "Width 1.5 shoulder width" }
+                ],
+
+                vitesses: [
+                    { title: "Normal Motion", korean: "Botong", badge: "NORM", description: "Standard execution speed synchronised with breath and sine wave." },
+                    { title: "Fast Motion", korean: "Pallun", badge: "RAP", description: "Vif enchaînement de mouvements sans pause." }
+                ],
+
+                techniquesMains: [
+                    { name: "Punch", korean: "Jirugi", desc: "Strike using the first two knuckles of the fist." },
+                    { name: "Knife-Hand", korean: "Sonkal", desc: "Strike or block using the outer edge of the hand." }
+                ],
+
+                techniquesPieds: [
+                    { name: "Front Snap Kick", korean: "Ap Cha Busigi", desc: "Snap kick with the ball of the foot." },
+                    { name: "Side Piercing Kick", korean: "Yapcha Jirugi", desc: "Piercing kick using the outer edge of the foot." }
+                ],
+
+                biomecanique: [
+                    { title: "Sine Wave", content: "Vertical motion of the body center of mass by bending and straightening knees to maximize body mass impact." }
+                ],
+
+                theoriePuissance: [
+                    { title: "Body Mass", content: "Utilisation du poids du corps transféré par l'onde sinusoïdale." }
+                ],
+
+                get filteredTuls() {
+                    return this.tuls.filter(t => {
+                        let match = t.name.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
+                                    t.meaning.toLowerCase().includes(this.searchQuery.toLowerCase());
+                        if (this.tulFilter === 'gup') return match && (t.grade.includes('Gup') || t.grade.includes('Pratique'));
+                        if (this.tulFilter === 'dan') return match && t.grade.includes('Dan');
+                        return match;
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
