@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encyclopédie ITF Taekwon-Do - Compendium Complète</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        itfblue: '#002855',
+                        itfred: '#C8102E',
+                        itfdark: '#0B0F19',
+                        itfcard: '#161E2E'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0B0F19; }
+        ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    </style>
+</head>
+<body class="bg-itfdark text-slate-100 min-h-screen flex flex-col font-sans selection:bg-itfred selection:text-white" x-data="itfApp()">
+
+    <!-- En-tête Navigation -->
+    <header class="bg-itfcard border-b border-slate-800 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-itfblue to-itfred flex items-center justify-center font-bold text-lg shadow-inner border border-slate-700 shrink-0">
+                    ITF
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        Encyclopédie Taekwon-Do ITF
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-itfred/20 text-itfred border border-itfred/30 font-semibold uppercase">Édition Intégrale</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Général Choi Hong Hi — Tuls Pas à Pas & Sciences Martiales</p>
+                </div>
+            </div>
+
+            <!-- Barre de recherche -->
+            <div class="w-full sm:w-72 relative">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </span>
+                <input type="text" x-model="searchQuery" placeholder="Rechercher tul, posture, technique..." 
+                    class="w-full pl-9 pr-4 py-1.5 text-sm bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-itfred text-white placeholder-slate-500">
+            </div>
+        </div>
+
+        <!-- Onglets -->
+        <nav class="max-w-7xl mx-auto px-4 flex overflow-x-auto space-x-1 border-t border-slate-800/80 text-sm no-scrollbar">
+            <button @click="activeTab = 'tuls'" :class="activeTab === 'tuls' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Les 25 Tuls
+            </button>
+            <button @click="activeTab = 'postures'" :class="activeTab === 'postures' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Postures (Sogi)
+            </button>
+            <button @click="activeTab = 'vitesses'" :class="activeTab === 'vitesses' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Vitesses
+            </button>
+            <button @click="activeTab = 'mains'" :class="activeTab === 'mains' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Techniques de Mains
+            </button>
+            <button @click="activeTab = 'pieds'" :class="activeTab === 'pieds' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Techniques de Pieds
+            </button>
+            <button @click="activeTab = 'biomecanique'" :class="activeTab === 'biomecanique' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Biomécanique
+            </button>
+            <button @click="activeTab = 'theorie'" :class="activeTab === 'theorie' ? 'border-itfred text-white bg-slate-800/50' : 'border-transparent text-slate-400 hover:text-slate-200'" class="px-4 py-3 border-b-2 font-medium whitespace-nowrap transition-colors flex items-center gap-2">
+                Théorie de la Puissance
+            </button>
+        </nav>
+    </header>
+
+    <!-- Contenu Principal -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+
+        <!-- ONGLET 1 : LES TULS -->
+        <div x-show="activeTab === 'tuls'">
+            <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Répertoire des Formes (Tuls)</h2>
+                    <p class="text-sm text-slate-400">Cliquez sur n'importe quel Tul ci-dessous pour ouvrir la séquence détaillée complète de tous ses mouvements.</p>
+                </div>
+                <div class="flex gap-2 bg-slate-900 p-1 rounded-lg border border-slate-800 text-xs">
+                    <button @click="tulFilter = 'all'" :class="tulFilter === 'all' ? 'bg-itfred text-white font-medium' : 'text-slate-400 hover:text-white'" class="px-3 py-1.5 rounded transition">Tous (26)</button>
+                    <button @click="tulFilter = 'gup'" :class="tulFilter === 'gup' ? 'bg-itfred text-white font-medium' : 'text-slate-400 hover:text-white'" class="px-3 py-1.5 rounded transition">Couleurs (Gup)</button>
+                    <button @click="tulFilter = 'dan'" :class="tulFilter === 'dan' ? 'bg-itfred text-white font-medium' : 'text-slate-400 hover:text-white'" class="px-3 py-1.5 rounded transition">Noires (Dan)</button>
+                </div>
+            </div>
+
+            <!-- Grille des Tuls -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <template x-for="tul in filteredTuls" :key="tul.id">
+                    <div @click="selectedTul = tul" class="bg-itfcard border border-slate-800 hover:border-slate-600 rounded-xl p-5 cursor-pointer transition-all hover:shadow-lg flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wide"
+                                      :class="tul.grade.includes('Gup') || tul.grade.includes('Pratique') ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-slate-700/50 text-slate-300 border border-slate-600'">
+                                    <span x-text="tul.grade"></span>
+                                </span>
+                                <span class="text-xs font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+                                    <span x-text="tul.movements"></span> mouvements
+                                </span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-itfred transition-colors" x-text="tul.name"></h3>
+                            <p class="text-xs text-slate-400 mt-1 line-clamp-2" x-text="tul.meaning"></p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex justify-between items-center text-xs text-slate-400">
+                            <span class="font-mono text-slate-500">Diagramme : <strong class="text-slate-300" x-text="tul.diagram"></strong></span>
+                            <span class="text-itfred font-medium flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                Mouvements pas à pas &rarr;
+                            </span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- FENÊTRE MODALE DÉTAILS TUL -->
+        <div x-show="selectedTul" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <div @click.outside="selectedTul = null" class="bg-itfcard border border-slate-700 w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+                <div class="p-6 border-b border-slate-800 flex justify-between items-start bg-slate-900/50">
+                    <div>
+                        <div class="flex items-center gap-2 text-xs text-itfred font-semibold uppercase tracking-wider mb-1">
+                            <span x-text="selectedTul?.grade"></span> • <span x-text="selectedTul?.movements"></span> Mouvements
+                        </div>
+                        <h2 class="text-2xl font-bold text-white" x-text="selectedTul?.name"></h2>
+                    </div>
+                    <button @click="selectedTul = null" class="text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition">
+                        ✕
+                    </button>
+                </div>
+                <div class="p-6 overflow-y-auto space-y-6">
+                    <div>
+                        <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Signification historique</h4>
+                        <p class="text-slate-200 text-sm leading-relaxed bg-slate-900/40 p-4 rounded-xl border border-slate-800" x-text="selectedTul?.meaning"></p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800">
+                            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Diagramme d'évolution</h4>
+                            <p class="text-lg font-mono font-bold text-white" x-text="selectedTul?.diagram"></p>
+                        </div>
+                        <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800">
+                            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Position de départ</h4>
+                            <p class="text-lg font-medium text-white" x-text="selectedTul?.readyStance"></p>
+                        </div>
+                    </div>
+
+                    <!-- LISTE DES MOVEMENTS DU TUL -->
+                    <div>
+                        <h4 class="text-xs font-semibold text-itfred uppercase tracking-wider mb-3 flex items-center justify-between">
+                            <span>Déroulement des mouvements pas à pas</span>
+                            <span class="text-slate-400 text-[10px] lowercase" x-text="(selectedTul?.techniques?.length || 0) + ' étapes au total'"></span>
+                        </h4>
+                        <div class="space-y-2 max-h-96 overflow-y-auto pr-1">
+                            <template x-for="(tech, index) in selectedTul?.techniques || []" :key="index">
+                                <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-800/80 flex items-start gap-3">
+                                    <span class="w-7 h-7 rounded-full bg-itfred/20 text-itfred border border-itfred/30 flex items-center justify-center text-xs font-bold shrink-0" x-text="tech.num || (index + 1)"></span>
+                                    <div class="flex-1 text-sm">
+                                        <div class="flex justify-between items-start flex-wrap gap-1">
+                                            <strong class="text-white font-semibold" x-text="tech.action"></strong>
+                                            <span class="text-xs font-mono text-slate-400 bg-slate-800 px-2 py-0.5 rounded" x-text="tech.stance"></span>
+                                        </div>
+                                        <p class="text-xs text-slate-400 mt-0.5" x-text="tech.details"></p>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-slate-800 bg-slate-900/50 flex justify-end">
+                    <button @click="selectedTul = null" class="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-medium transition">Fermer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ONGLET 2 : POSTURES (SOGI) -->
+        <div x-show="activeTab === 'postures'" x-cloak>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Répertoire des Postures (Sogi)</h2>
+                <p class="text-sm text-slate-400">Les postures fondamentales du Taekwon-Do ITF avec leurs spécifications biomécaniques et répartition du poids.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <template x-for="pos in postures" :key="pos.name">
+                    <div class="bg-itfcard border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold text-white" x-text="pos.name"></h3>
+                                <span class="text-xs font-mono text-itfred bg-itfred/10 px-2 py-0.5 rounded border border-itfred/20" x-text="pos.korean"></span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-4" x-text="pos.description"></p>
+                        </div>
+                        <div class="space-y-2 text-xs border-t border-slate-800/80 pt-3">
+                            <div class="flex justify-between"><span class="text-slate-500">Répartition du poids :</span><span class="text-slate-200 font-medium" x-text="pos.weight"></span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Largeur / Longueur :</span><span class="text-slate-200 font-medium" x-text="pos.dimensions"></span></div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- ONGLET 3 : VITESSES -->
+        <div x-show="activeTab === 'vitesses'" x-cloak>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Vitesses d'Exécution & Cadences</h2>
+                <p class="text-sm text-slate-400">Classification officielle des rythmes et mouvements dans les Tuls (Encyclopédie ITF).</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <template x-for="v in vitesses" :key="v.title">
+                    <div class="bg-itfcard border border-slate-800 rounded-xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-itfred/20 text-itfred flex items-center justify-center font-bold text-xs border border-itfred/30" x-text="v.badge"></div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-white" x-text="v.title"></h3>
+                                    <span class="text-xs font-mono text-itfred" x-text="v.korean"></span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-300 leading-relaxed mb-4" x-text="v.description"></p>
+                        </div>
+                        <div class="bg-slate-900/50 p-3 rounded-lg border border-slate-800/80 text-xs text-slate-400">
+                            <strong class="text-slate-200">Exemple d'application :</strong> <span x-text="v.example"></span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- ONGLET 4 : TECHNIQUES DE MAINS -->
+        <div x-show="activeTab === 'mains'" x-cloak>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Techniques de Mains (Son & Joomuk)</h2>
+                <p class="text-sm text-slate-400">Répertoire complet des outils de frappe et de blocage avec les mains et les bras.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <template x-for="m in techniquesMains" :key="m.name">
+                    <div class="bg-itfcard border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold text-white" x-text="m.name"></h3>
+                                <span class="text-xs font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20" x-text="m.korean"></span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-3" x-text="m.desc"></p>
+                        </div>
+                        <div class="border-t border-slate-800/80 pt-3 text-xs text-slate-300">
+                            <span class="text-slate-500">Cible principale :</span> <span class="font-medium text-white" x-text="m.target"></span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- ONGLET 5 : TECHNIQUES DE PIEDS -->
+        <div x-show="activeTab === 'pieds'" x-cloak>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Techniques de Pieds (Bal Gisool & Chagi)</h2>
+                <p class="text-sm text-slate-400">Outils de frappe avec les jambes, hauteurs, coups de pied sautés et défenses de pieds.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <template x-for="p in techniquesPieds" :key="p.name">
+                    <div class="bg-itfcard border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold text-white" x-text="p.name"></h3>
+                                <span class="text-xs font-mono text-itfred bg-itfred/10 px-2 py-0.5 rounded border border-itfred/20" x-text="p.korean"></span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-3" x-text="p.desc"></p>
+                        </div>
+                        <div class="border-t border-slate-800/80 pt-3 text-xs text-slate-300">
+                            <span class="text-slate-500">Surface d'impact :</span> <span class="font-medium text-white" x-text="p.tool"></span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- ONGLET 6 : BIOMÉCANIQUE -->
+        <div x-show="activeTab === 'biomecanique'" x-cloak>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Biomécanique, Ondes & Déplacements</h2>
+                <p class="text-sm text-slate-400">Principes physiques et géométriques extraits des chapitres de l'Encyclopédie sur le mouvement.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <template x-for="b in biomecanique" :key="b.title">
+                    <div class="bg-itfcard border border-slate-800 rounded-xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-8 h-8 rounded-lg bg-itfblue/30 text-blue-400 flex items-center justify-center font-bold text-sm border border-blue-500/30" x-text="b.id"></div>
+                                <h3 class="text-lg font-bold text-white" x-text="b.title"></h3>
+                            </div>
+                            <p class="text-sm text-slate-300 leading-relaxed" x-text="b.content"></p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- ONGLET 7 : THÉORIE DE LA PUISSANCE -->
+        <div x-show="activeTab === 'theorie'" x-cloak>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Théorie de la Puissance (Him Ui Wolli)</h2>
+                <p class="text-sm text-slate-400">Les 6 facteurs fondamentaux développés par le Général Choi Hong Hi pour maximiser l'efficacité martiale.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <template x-for="th in theoriePuissance" :key="th.title">
+                    <div class="bg-itfcard border border-slate-800 rounded-xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-8 h-8 rounded-lg bg-itfred/20 text-itfred flex items-center justify-center font-bold text-sm border border-itfred/30" x-text="th.id"></div>
+                                <h3 class="text-lg font-bold text-white" x-text="th.title"></h3>
+                            </div>
+                            <p class="text-sm text-slate-300 leading-relaxed" x-text="th.content"></p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Pied de page -->
+    <footer class="bg-itfcard border-t border-slate-800 py-4 text-center text-xs text-slate-500 mt-auto">
+        <p>Encyclopédie Numérique du Taekwon-Do ITF • Basée sur l'Encyclopédie du Général Choi Hong Hi</p>
+    </footer>
+
+    <!-- Script de l'application -->
+    <script>
+        function itfApp() {
+            return {
+                activeTab: 'tuls',
+                searchQuery: '',
+                tulFilter: 'all',
+                selectedTul: null,
+                
+                tuls: [
+                    { 
+                        id: 1, name: "Saju Jirugi (4 Directions Punch)", grade: "Pratique", movements: 7, diagram: "┼", readyStance: "Parallel Ready Stance", 
+                        meaning: "Exercice fondamental de frappe dans les 4 directions.",
+                        techniques: [
+                            { num: 1, action: "Blocage Bas Avant-bras Gauche", stance: "Gunun Sogi", details: "Déplacement du pied droit vers D." },
+                            { num: 2, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer le pied droit vers D." },
+                            { num: 3, action: "Blocage Bas Avant-bras Gauche", stance: "Gunun Sogi", details: "Pivoter vers B." },
+                            { num: 4, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer le pied droit vers B." },
+                            { num: 5, action: "Blocage Bas Avant-bras Gauche", stance: "Gunun Sogi", details: "Pivoter vers A." },
+                            { num: 6, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer le pied droit vers A." },
+                            { num: 7, action: "Blocage Bas Avant-bras Gauche", stance: "Gunun Sogi", details: "Pivoter vers C." }
+                        ]
+                    },
+                    { 
+                        id: 2, name: "Saju Makgi (4 Directions Block)", grade: "Pratique", movements: 8, diagram: "┼", readyStance: "Parallel Ready Stance", 
+                        meaning: "Exercice fondamental de blocage au couteau dans les 4 directions.",
+                        techniques: [
+                            { num: 1, action: "Blocage Bas Tranchant de Main Gauche", stance: "Gunun Sogi", details: "Reculer le pied droit vers C." },
+                            { num: 2, action: "Blocage Moyen Avant-bras Intérieur Droit", stance: "Gunun Sogi", details: "Avancer le pied droit vers D." },
+                            { num: 3, action: "Blocage Bas Tranchant de Main Gauche", stance: "Gunun Sogi", details: "Reculer le pied droit." },
+                            { num: 4, action: "Blocage Moyen Avant-bras Intérieur Droit", stance: "Gunun Sogi", details: "Pivoter vers B." },
+                            { num: 5, action: "Blocage Bas Tranchant de Main Gauche", stance: "Gunun Sogi", details: "Reculer le pied droit." },
+                            { num: 6, action: "Blocage Moyen Avant-bras Intérieur Droit", stance: "Gunun Sogi", details: "Pivoter vers A." },
+                            { num: 7, action: "Blocage Bas Tranchant de Main Gauche", stance: "Gunun Sogi", details: "Reculer le pied droit." },
+                            { num: 8, action: "Blocage Moyen Avant-bras Intérieur Droit", stance: "Gunun Sogi", details: "Pivoter vers C." }
+                        ]
+                    },
+                    { 
+                        id: 3, name: "Chon-Ji", grade: "9e Gup", movements: 19, diagram: "+", readyStance: "Parallel Ready Stance", 
+                        meaning: "Signifie 'Le Ciel et la Terre'. Interprété comme la création du monde et le début de l'histoire humaine.",
+                        techniques: [
+                            { num: 1, action: "Blocage Bas Avant-bras Gauche", stance: "Gunun Sogi", details: "Déplacer pied gauche vers B." },
+                            { num: 2, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers B." },
+                            { num: 3, action: "Blocage Bas Avant-bras Droit", stance: "Gunun Sogi", details: "Pivoter vers A." },
+                            { num: 4, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer pied gauche vers A." },
+                            { num: 5, action: "Blocage Bas Avant-bras Gauche", stance: "Gunun Sogi", details: "Pivoter vers D." },
+                            { num: 6, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers D." },
+                            { num: 7, action: "Blocage Bas Avant-bras Droit", stance: "Gunun Sogi", details: "Pivoter vers C." },
+                            { num: 8, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer pied gauche vers C." },
+                            { num: 9, action: "Blocage Moyen Garde Avant-bras Droit", stance: "Niunja Sogi", details: "Déplacer pied gauche vers A." },
+                            { num: 10, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers A." },
+                            { num: 11, action: "Blocage Moyen Garde Avant-bras Gauche", stance: "Niunja Sogi", details: "Pivoter vers B." },
+                            { num: 12, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer pied gauche vers B." },
+                            { num: 13, action: "Blocage Moyen Garde Avant-bras Droit", stance: "Niunja Sogi", details: "Pivoter vers C." },
+                            { num: 14, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers C." },
+                            { num: 15, action: "Blocage Moyen Garde Avant-bras Gauche", stance: "Niunja Sogi", details: "Pivoter vers D." },
+                            { num: 16, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer pied gauche vers D." },
+                            { num: 17, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers D." },
+                            { num: 18, action: "Coup de Poing Moyen Gauche (Reculer)", stance: "Gunun Sogi", details: "Reculer le pied droit." },
+                            { num: 19, action: "Coup de Poing Moyen Droit (Reculer)", stance: "Gunun Sogi", details: "Reculer le pied gauche." }
+                        ]
+                    },
+                    { 
+                        id: 4, name: "Dan-Gun", grade: "8e Gup", movements: 21, diagram: "H", readyStance: "Parallel Ready Stance", 
+                        meaning: "Nommé d'après le saint Dan-Gun, le fondateur légendaire de la Corée en 2333 av. J.-C.",
+                        techniques: [
+                            { num: 1, action: "Blocage Moyen Garde Tranchant de Main Gauche", stance: "Niunja Sogi", details: "Pied gauche vers B." },
+                            { num: 2, action: "Coup de Poing Haut Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers B." },
+                            { num: 3, action: "Blocage Moyen Garde Tranchant de Main Droit", stance: "Niunja Sogi", details: "Pivoter vers A." },
+                            { num: 4, action: "Coup de Poing Haut Gauche", stance: "Gunun Sogi", details: "Avancer pied gauche vers A." },
+                            { num: 5, action: "Blocage Bas Avant-bras Gauche", stance: "Gunun Sogi", details: "Pied gauche vers D." },
+                            { num: 6, action: "Coup de Poing Haut Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers D." },
+                            { num: 7, action: "Coup de Poing Haut Gauche", stance: "Gunun Sogi", details: "Avancer pied gauche vers D." },
+                            { num: 8, action: "Coup de Poing Haut Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers D." },
+                            { num: 9, action: "Blocage Moyen Garde Tranchant Gauche", stance: "Niunja Sogi", details: "Pivoter vers E." },
+                            { num: 10, action: "Coup de Poing Haut Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers E." },
+                            { num: 11, action: "Blocage Moyen Garde Tranchant Droit", stance: "Niunja Sogi", details: "Pivoter vers F." },
+                            { num: 12, action: "Coup de Poing Haut Gauche", stance: "Gunun Sogi", details: "Avancer pied gauche vers F." },
+                            { num: 13, action: "Blocage Montant Avant-bras Gauche", stance: "Gunun Sogi", details: "Pied gauche vers C." },
+                            { num: 14, action: "Blocage Montant Avant-bras Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers C." },
+                            { num: 15, action: "Blocage Montant Avant-bras Gauche", stance: "Gunun Sogi", details: "Avancer pied gauche vers C." },
+                            { num: 16, action: "Blocage Montant Avant-bras Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers C." },
+                            { num: 17, action: "Frappe Tranchant de Main Gauche", stance: "Niunja Sogi", details: "Pivoter vers B." },
+                            { num: 18, action: "Coup de Poing Haut Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers B." },
+                            { num: 19, action: "Frappe Tranchant de Main Droit", stance: "Niunja Sogi", details: "Pivoter vers A." },
+                            { num: 20, action: "Coup de Poing Haut Gauche", stance: "Gunun Sogi", details: "Avancer pied gauche vers A." },
+                            { num: 21, action: "Coup de Poing Haut Droit", stance: "Gunun Sogi", details: "Avancer pied droit." }
+                        ]
+                    },
+                    { 
+                        id: 5, name: "Do-San", grade: "7e Gup", movements: 24, diagram: "I", readyStance: "Close Ready Stance B", 
+                        meaning: "Pseudonyme du patriote Ahn Chang-Ho (1876-1938). Les 24 mouvements représentent sa vie consacrée à l'éducation.",
+                        techniques: [
+                            { num: 1, action: "Blocage Moyen Avant-bras Extérieur Droit", stance: "Niunja Sogi", details: "Pied gauche vers A." },
+                            { num: 2, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer pied gauche vers A." },
+                            { num: 3, action: "Blocage Moyen Avant-bras Extérieur Gauche", stance: "Niunja Sogi", details: "Pivoter vers B." },
+                            { num: 4, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers B." },
+                            { num: 5, action: "Blocage Moyen Garde Tranchant de Main Gauche", stance: "Niunja Sogi", details: "Pivoter vers D." },
+                            { num: 6, action: "Attaque Doigts Piquants Droit", stance: "Gunun Sogi", details: "Avancer pied droit vers D." },
+                            { num: 7, action: "Attaque Inverse Tranchant Droit", stance: "Gunun Sogi", details: "Dégagement vers D." },
+                            { num: 8, action: "Blocage Moyen Garde Tranchant Droit", stance: "Niunja Sogi", details: "Pivoter vers C." },
+                            { num: 9, action: "Blocage Moyen Avant-bras Extérieur Gauche", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 10, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 11, action: "Blocage Moyen Avant-bras Extérieur Droit", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 12, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 13, action: "Coup de Pied Avant Snap Droit", stance: "Saut / Appui", details: "Frappe vers C." },
+                            { num: 14, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Réception vers C." },
+                            { num: 15, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Enchaînement rapide." },
+                            { num: 16, action: "Blocage Montant Avant-bras Gauche", stance: "Gunun Sogi", details: "Pivoter vers E." },
+                            { num: 17, action: "Blocage Montant Avant-bras Droit", stance: "Gunun Sogi", details: "Pivoter vers F." },
+                            { num: 18, action: "Frappe Tranchant de Main Gauche", stance: "Niunja Sogi", details: "Pivoter vers B." },
+                            { num: 19, action: "Frappe Tranchant de Main Droit", stance: "Niunja Sogi", details: "Pivoter vers A." },
+                            { num: 20, action: "Blocage Moyen Avant-bras Intérieur Gauche", stance: "Gunun Sogi", details: "Avancer vers A." },
+                            { num: 21, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers A." },
+                            { num: 22, action: "Blocage Moyen Avant-bras Intérieur Droit", stance: "Gunun Sogi", details: "Pivoter vers B." },
+                            { num: 23, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer vers B." },
+                            { num: 24, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers D." }
+                        ]
+                    },
+                    {
+                        id: 6, name: "Won-Hyo", grade: "6e Gup", movements: 28, diagram: "H", readyStance: "Close Ready Stance A",
+                        meaning: "Le moine éminent qui introduisit le Bouddhisme dans la dynastie Silla en l'an 686 ap. J.-C.",
+                        techniques: [
+                            { num: 1, action: "Blocage Moyen Garde Tranchant Gauche", stance: "Niunja Sogi", details: "Déplacer pied gauche vers A." },
+                            { num: 2, action: "Attaque Tranchant de Main Inversé Droit", stance: "Gunun Sogi", details: "Glissement vers A." },
+                            { num: 3, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer vers A." },
+                            { num: 4, action: "Blocage Moyen Garde Tranchant Droit", stance: "Niunja Sogi", details: "Pivoter vers B." },
+                            { num: 5, action: "Attaque Tranchant de Main Inversé Gauche", stance: "Gunun Sogi", details: "Glissement vers B." },
+                            { num: 6, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers B." },
+                            { num: 7, action: "Blocage Bas Avant-bras Gauche", stance: "Dwit Bal Sogi", details: "Pied gauche vers D." },
+                            { num: 8, action: "Frappe Dos de Poing Droit", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 9, action: "Blocage Moyen Garde Avant-bras Gauche", stance: "Niunja Sogi", details: "Avancer vers D." },
+                            { num: 10, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 11, action: "Blocage Moyen Garde Avant-bras Gauche", stance: "Niunja Sogi", details: "Pivoter vers C." },
+                            { num: 12, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 13, action: "Coup de Pied Latéral Droit", stance: "Appui Unilatéral", details: "Frappe vers C." },
+                            { num: 14, action: "Blocage Moyen Garde Tranchant Droit", stance: "Niunja Sogi", details: "Réception vers C." },
+                            { num: 15, action: "Blocage Moyen Garde Tranchant Gauche", stance: "Niunja Sogi", details: "Pivoter vers E." },
+                            { num: 16, action: "Attaque Doigts Piquants Droit", stance: "Gunun Sogi", details: "Avancer vers E." },
+                            { num: 17, action: "Blocage Moyen Garde Tranchant Droit", stance: "Niunja Sogi", details: "Pivoter vers F." },
+                            { num: 18, action: "Attaque Doigts Piquants Gauche", stance: "Gunun Sogi", details: "Avancer vers F." },
+                            { num: 19, action: "Blocage Moyen Garde Avant-bras Gauche", stance: "Gunun Sogi", details: "Avancer vers A." },
+                            { num: 20, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers A." },
+                            { num: 21, action: "Coup de Pied Latéral Gauche", stance: "Appui Unilatéral", details: "Frappe vers B." },
+                            { num: 22, action: "Blocage Moyen Garde Tranchant Gauche", stance: "Niunja Sogi", details: "Réception vers B." },
+                            { num: 23, action: "Blocage Moyen Avant-bras Intérieur Gauche", stance: "Gunun Sogi", details: "Avancer vers B." },
+                            { num: 24, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers B." },
+                            { num: 25, action: "Blocage Moyen Avant-bras Intérieur Droit", stance: "Gunun Sogi", details: "Pivoter vers A." },
+                            { num: 26, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer vers A." },
+                            { num: 27, action: "Blocage Bas Tranchant de Main Gauche", stance: "Niunja Sogi", details: "Pivoter vers D." },
+                            { num: 28, action: "Blocage Bas Tranchant de Main Droit", stance: "Niunja Sogi", details: "Pivoter vers C." }
+                        ]
+                    },
+                    {
+                        id: 7, name: "Yul-Gok", grade: "5e Gup", movements: 38, diagram: "I", readyStance: "Close Ready Stance B",
+                        meaning: "Pseudonyme du philosophe Yi I (1536-1584), le 'Confucius de Corée'. Les 38 mouvements représentent la latitude de sa naissance (38° N).",
+                        techniques: [
+                            { num: 1, action: "Attaque Coude Gauche au Creux de la Main", stance: "Annun Sogi", details: "Déplacement vers C." },
+                            { num: 2, action: "Double Coup de Poing Moyen (Gauche puis Droit)", stance: "Annun Sogi", details: "Sur place." },
+                            { num: 3, action: "Double Coup de Poing Moyen", stance: "Annun Sogi", details: "Sur place." },
+                            { num: 4, action: "Attaque Coude Droit", stance: "Annun Sogi", details: "Pied droit vers D." },
+                            { num: 5, action: "Double Coup de Poing Moyen", stance: "Annun Sogi", details: "Sur place." },
+                            { num: 6, action: "Double Coup de Poing Moyen", stance: "Annun Sogi", details: "Sur place." },
+                            { num: 7, action: "Blocage Moyen Avant-bras Intérieur Droit", stance: "Gunun Sogi", details: "Pied droit vers A." },
+                            { num: 8, action: "Coup de Pied Avant Snap Droit", stance: "Appui Unilatéral", details: "Frappe vers A." },
+                            { num: 9, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Réception vers A." },
+                            { num: 10, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Enchaînement." },
+                            { num: 11, action: "Blocage Moyen Avant-bras Intérieur Gauche", stance: "Gunun Sogi", details: "Pivoter vers B." },
+                            { num: 12, action: "Coup de Pied Avant Snap Gauche", stance: "Appui Unilatéral", details: "Frappe vers B." },
+                            { num: 13, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Réception vers B." },
+                            { num: 14, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Enchaînement." },
+                            { num: 15, action: "Blocage Croisé Avant-bras", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 16, action: "Blocage Croisé Avant-bras Inversé", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 17, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 18, action: "Blocage Croisé Avant-bras", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 19, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 20, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 21, action: "Blocage Moyen Avant-bras Intérieur Droit", stance: "Gunun Sogi", details: "Pivoter vers E." },
+                            { num: 22, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer vers E." },
+                            { num: 23, action: "Blocage Moyen Avant-bras Intérieur Gauche", stance: "Gunun Sogi", details: "Pivoter vers F." },
+                            { num: 24, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers F." },
+                            { num: 25, action: "Blocage Bas Avant-bras Droit", stance: "Gunun Sogi", details: "Pivoter vers C." },
+                            { num: 26, action: "Blocage Bas Avant-bras Gauche", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 27, action: "Blocage Montant Avant-bras Droit", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 28, action: "Blocage Montant Avant-bras Gauche", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 29, action: "Frappe Tranchant de Main Gauche Inversé", stance: "Niunja Sogi", details: "Pivoter vers A." },
+                            { num: 30, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers A." },
+                            { num: 31, action: "Frappe Tranchant de Main Droit Inversé", stance: "Niunja Sogi", details: "Pivoter vers B." },
+                            { num: 32, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer vers B." },
+                            { num: 33, action: "Attaque Coude Droit au Creux de Main Gauche", stance: "Gunun Sogi", details: "Pivoter vers D." },
+                            { num: 34, action: "Attaque Coude Gauche au Creux de Main Droit", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 35, action: "Blocage Double Avant-bras Haut", stance: "Niunja Sogi", details: "Pivoter vers E." },
+                            { num: 36, action: "Blocage Double Avant-bras Haut", stance: "Niunja Sogi", details: "Pivoter vers F." },
+                            { num: 37, action: "Coup de Poing Moyen Droit", stance: "Annun Sogi", details: "Déplacement latéral." },
+                            { num: 38, action: "Coup de Poing Moyen Gauche", stance: "Annun Sogi", details: "Finalisation." }
+                        ]
+                    },
+                    {
+                        id: 8, name: "Joong-Gun", grade: "4e Gup", movements: 32, diagram: "H", readyStance: "Close Ready Stance A",
+                        meaning: "Nommé d'après le patriote Ahn Joong-Gun qui assassina Hiro-Bumi Ito. Les 32 mouvements représentent son âge lors de son exécution en 1910.",
+                        techniques: [
+                            { num: 1, action: "Blocage Inversé Tranchant de Main Gauche", stance: "Niunja Sogi", details: "Pied gauche vers B." },
+                            { num: 2, action: "Coup de Pied Avant Snap Droit", stance: "Appui Unilatéral", details: "Frappe vers B." },
+                            { num: 3, action: "Coup de Poing Moyen Palmier Droit", stance: "Gunun Sogi", details: "Réception vers B." },
+                            { num: 4, action: "Blocage Inversé Tranchant Droit", stance: "Niunja Sogi", details: "Pivoter vers A." },
+                            { num: 5, action: "Coup de Pied Avant Snap Gauche", stance: "Appui Unilatéral", details: "Frappe vers A." },
+                            { num: 6, action: "Coup de Poing Moyen Palmier Gauche", stance: "Gunun Sogi", details: "Réception vers A." },
+                            { num: 7, action: "Blocage Moyen Garde Tranchant Gauche", stance: "Niunja Sogi", details: "Pivoter vers D." },
+                            { num: 8, action: "Attaque Doigt Piquant Plat Droit", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 9, action: "Blocage Moyen Garde Tranchant Droit", stance: "Niunja Sogi", details: "Pivoter vers C." },
+                            { num: 10, action: "Attaque Doigt Piquant Plat Gauche", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 11, action: "Saisie de Tête et Attaque Genou Droit", stance: "Appui Unilatéral", details: "Traction vers C." },
+                            { num: 12, action: "Double Blocage Avant-bras Bas", stance: "Niunja Sogi", details: "Réception vers C." },
+                            { num: 13, action: "Blocage Montant Poings Croisés", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 14, action: "Frappe Dos de Poing Droit", stance: "Niunja Sogi", details: "Pivoter vers E." },
+                            { num: 15, action: "Dégagement de Saisie Poignet Gauche", stance: "Gunun Sogi", details: "Rotation du poignet." },
+                            { num: 16, action: "Frappe Dos de Poing Gauche", stance: "Niunja Sogi", details: "Pivoter vers F." },
+                            { num: 17, action: "Dégagement de Saisie Poignet Droit", stance: "Gunun Sogi", details: "Rotation du poignet." },
+                            { num: 18, action: "Blocage Double Avant-bras Haut", stance: "Gunun Sogi", details: "Pivoter vers D." },
+                            { num: 19, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 20, action: "Double Blocage Bas Croisé", stance: "Niunja Sogi", details: "Avancer vers D." },
+                            { num: 21, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 22, action: "Blocage Pressé Paume Gauche", stance: "Gunun Sogi", details: "Pivoter vers A." },
+                            { num: 23, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Enchaînement vers A." },
+                            { num: 24, action: "Blocage Pressé Paume Droite", stance: "Gunun Sogi", details: "Pivoter vers B." },
+                            { num: 25, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Enchaînement vers B." },
+                            { num: 26, action: "Blocage Moyen Garde Avant-bras Gauche", stance: "Niunja Sogi", details: "Pivoter vers C." },
+                            { num: 27, action: "Coup de Pied Latéral Droit Perçant", stance: "Appui Unilatéral", details: "Frappe vers C." },
+                            { num: 28, action: "Blocage Moyen Garde Avant-bras Droit", stance: "Niunja Sogi", details: "Réception vers C." },
+                            { num: 29, action: "Coup de Pied Latéral Gauche Perçant", stance: "Appui Unilatéral", details: "Frappe vers C." },
+                            { num: 30, action: "Blocage Bas Tranchant de Main Gauche", stance: "Niunja Sogi", details: "Réception vers C." },
+                            { num: 31, action: "Blocage Bas Tranchant de Main Droit", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 32, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Finalisation vers C." }
+                        ]
+                    },
+                    {
+                        id: 9, name: "Toi-Gye", grade: "3e Gup", movements: 37, diagram: "I", readyStance: "Close Ready Stance A",
+                        meaning: "Pseudonyme de l'érudit Yi Hwang (16e siècle). Le diagramme représente son lieu de naissance.",
+                        techniques: [
+                            { num: 1, action: "Blocage Moyen Avant-bras Intérieur Gauche", stance: "Niunja Sogi", details: "Pied gauche vers A." },
+                            { num: 2, action: "Attaque Doigts Piquants Plat Droit", stance: "Gunun Sogi", details: "Avancer vers A." },
+                            { num: 3, action: "Blocage Moyen Avant-bras Intérieur Droit", stance: "Niunja Sogi", details: "Pivoter vers B." },
+                            { num: 4, action: "Attaque Doigts Piquants Plat Gauche", stance: "Gunun Sogi", details: "Avancer vers B." },
+                            { num: 5, action: "Blocage Moyen Garde Tranchant Gauche", stance: "Niunja Sogi", details: "Pivoter vers D." },
+                            { num: 6, action: "Coup de Pied Avant Snap Droit", stance: "Appui Unilatéral", details: "Frappe vers D." },
+                            { num: 7, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Réception vers D." },
+                            { num: 8, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Enchaînement." },
+                            { num: 9, action: "Blocage Bas Avant-bras Gauche", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 10, action: "Blocage Montant Avant-bras Droit", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 11, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 12, action: "Saisie de Nuque et Attaque Genou Droit", stance: "Appui Unilatéral", details: "Traction vers D." },
+                            { num: 13, action: "Blocage Bas Poings Croisés", stance: "Niunja Sogi", details: "Réception vers D." },
+                            { num: 14, action: "Double Blocage Avant-bras Haut (W-Shape)", stance: "Annun Sogi", details: "Rotation du corps vers A." },
+                            { num: 15, action: "Double Blocage Avant-bras Haut", stance: "Annun Sogi", details: "Glissement vers A." },
+                            { num: 16, action: "Double Blocage Avant-bras Haut", stance: "Annun Sogi", details: "Glissement vers B." },
+                            { num: 17, action: "Double Blocage Avant-bras Haut", stance: "Annun Sogi", details: "Glissement vers B." },
+                            { num: 18, action: "Blocage Moyen Garde Tranchant Gauche", stance: "Niunja Sogi", details: "Pivoter vers C." },
+                            { num: 19, action: "Attaque Inversée Tranchant Droit", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 20, action: "Blocage Moyen Garde Tranchant Droit", stance: "Niunja Sogi", details: "Pivoter vers C." },
+                            { num: 21, action: "Attaque Inversée Tranchant Gauche", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 22, action: "Blocage Bas Tranchant Gauche", stance: "Niunja Sogi", details: "Pivoter vers E." },
+                            { num: 23, action: "Coup de Pied Avant Snap Gauche", stance: "Appui Unilatéral", details: "Frappe vers E." },
+                            { num: 24, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Réception vers E." },
+                            { num: 25, action: "Blocage Bas Tranchant Droit", stance: "Niunja Sogi", details: "Pivoter vers F." },
+                            { num: 26, action: "Coup de Pied Avant Snap Droit", stance: "Appui Unilatéral", details: "Frappe vers F." },
+                            { num: 27, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Réception vers F." },
+                            { num: 28, action: "Blocage Moyen Garde Avant-bras Gauche", stance: "Niunja Sogi", details: "Pivoter vers D." },
+                            { num: 29, action: "Blocage Bas Avant-bras Gauche", stance: "Niunja Sogi", details: "Changement de garde." },
+                            { num: 30, action: "Blocage Moyen Garde Avant-bras Droit", stance: "Niunja Sogi", details: "Pivoter vers C." },
+                            { num: 31, action: "Blocage Bas Avant-bras Droit", stance: "Niunja Sogi", details: "Changement de garde." },
+                            { num: 32, action: "Blocage Montant Avant-bras Gauche", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 33, action: "Blocage Montant Avant-bras Droit", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 34, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 35, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 36, action: "Attaque Coude Droit sur Paume Gauche", stance: "Annun Sogi", details: "Pivoter vers D." },
+                            { num: 37, action: "Attaque Coude Gauche sur Paume Droite", stance: "Annun Sogi", details: "Finalisation vers D." }
+                        ]
+                    },
+                    {
+                        id: 10, name: "Hwa-Rang", grade: "2e Gup", movements: 29, diagram: "I", readyStance: "Close Ready Stance C",
+                        meaning: "Nommé d'après les guerriers Hwa-Rang de la dynastie Silla. Les 29 mouvements font référence à la 29e division.",
+                        techniques: [
+                            { num: 1, action: "Blocage Poussé Paume Gauche", stance: "Annun Sogi", details: "Déplacer le pied gauche vers D." },
+                            { num: 2, action: "Coup de Poing Moyen Droit", stance: "Annun Sogi", details: "Sur place." },
+                            { num: 3, action: "Coup de Poing Moyen Gauche", stance: "Annun Sogi", details: "Sur place." },
+                            { num: 4, action: "Double Blocage Avant-bras Haut", stance: "Niunja Sogi", details: "Pivoter vers A." },
+                            { num: 5, action: "Coup de Poing Remontant Gauche", stance: "Niunja Sogi", details: "Sur place vers A." },
+                            { num: 6, action: "Coup de Poing Moyen Droit en Glissement", stance: "Gojung Sogi", details: "Glissement vers A." },
+                            { num: 7, action: "Attaque Inversée Tranchant de Main Droit", stance: "Soeshik Sogi", details: "Traction vers A." },
+                            { num: 8, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Avancer vers A." },
+                            { num: 9, action: "Blocage Bas Avant-bras Gauche", stance: "Gunun Sogi", details: "Pivoter vers D." },
+                            { num: 10, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 11, action: "Saisie de Poignet et Attaque Coude Droit", stance: "Gunun Sogi", details: "Avancer vers D." },
+                            { num: 12, action: "Coup de Pied Latéral Droit Perçant", stance: "Appui Unilatéral", details: "Frappe vers D." },
+                            { num: 13, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Réception vers D." },
+                            { num: 14, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Enchaînement." },
+                            { num: 15, action: "Blocage Moyen Garde Tranchant Droit", stance: "Niunja Sogi", details: "Pivoter vers E." },
+                            { num: 16, action: "Attaque Doigts Piquants Plat Gauche", stance: "Gunun Sogi", details: "Avancer vers E." },
+                            { num: 17, action: "Blocage Moyen Garde Tranchant Gauche", stance: "Niunja Sogi", details: "Pivoter vers F." },
+                            { num: 18, action: "Coup de Pied Circulaire Droit", stance: "Appui Unilatéral", details: "Frappe vers DF." },
+                            { num: 19, action: "Coup de Pied Circulaire Gauche", stance: "Appui Unilatéral", details: "Frappe rapide vers CF." },
+                            { num: 20, action: "Blocage Bas Avant-bras Gauche", stance: "Gunun Sogi", details: "Réception vers C." },
+                            { num: 21, action: "Coup de Poing Moyen Droit", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 22, action: "Blocage Moyen Garde Avant-bras Gauche", stance: "Niunja Sogi", details: "Reculer le pied droit." },
+                            { num: 23, action: "Coup de Poing Moyen Droit", stance: "Niunja Sogi", details: "Sur place." },
+                            { num: 24, action: "Blocage Pressé Poings Croisés", stance: "Gunun Sogi", details: "Glissement vers C." },
+                            { num: 25, action: "Attaque Coude Droit Latéral", stance: "Niunja Sogi", details: "Pivoter vers C." },
+                            { num: 26, action: "Blocage Intérieur Avant-bras Gauche", stance: "Guburyo Sogi", details: "Regroupement pied gauche." },
+                            { num: 27, action: "Coup de Pied Latéral Gauche Perçant", stance: "Appui Unilatéral", details: "Frappe vers B." },
+                            { num: 28, action: "Blocage Moyen Garde Tranchant Gauche", stance: "Niunja Sogi", details: "Réception vers B." },
+                            { num: 29, action: "Blocage Moyen Garde Tranchant Droit", stance: "Niunja Sogi", details: "Pivoter vers A." }
+                        ]
+                    },
+                    {
+                        id: 11, name: "Choong-Moo", grade: "1er Gup", movements: 30, diagram: "I", readyStance: "Parallel Ready Stance",
+                        meaning: "Dédié à l'amiral Yi Sun-Sin, inventeur du navire de guerre Kobukson en 1592.",
+                        techniques: [
+                            { num: 1, action: "Blocage Double Tranchant de Main", stance: "Niunja Sogi", details: "Pied gauche vers B." },
+                            { num: 2, action: "Attaque Tranchant de Main Haut Droit", stance: "Gunun Sogi", details: "Avancer vers B." },
+                            { num: 3, action: "Blocage Moyen Garde Tranchant Gauche", stance: "Niunja Sogi", details: "Pivoter vers A." },
+                            { num: 4, action: "Attaque Doigts Piquants Plat Gauche", stance: "Gunun Sogi", details: "Avancer vers A." },
+                            { num: 5, action: "Blocage Moyen Garde Tranchant Droit", stance: "Niunja Sogi", details: "Pivoter vers D." },
+                            { num: 6, action: "Coup de Pied Latéral Droit Perçant", stance: "Appui Unilatéral", details: "Frappe vers D." },
+                            { num: 7, action: "Blocage Moyen Garde Tranchant Droit", stance: "Niunja Sogi", details: "Réception vers D." },
+                            { num: 8, action: "Coup de Pied Sauté Latéral Droit", stance: "Saut Aérien", details: "Changement de direction D." },
+                            { num: 9, action: "Blocage Moyen Garde Tranchant Gauche", stance: "Niunja Sogi", details: "Réception vers D." },
+                            { num: 10, action: "Blocage Bas Avant-bras Gauche", stance: "Niunja Sogi", details: "Pivoter vers E." },
+                            { num: 11, action: "Saisie de Tête et Attaque Genou Droit", stance: "Gunun Sogi", details: "Traction vers E." },
+                            { num: 12, action: "Attaque Tranchant Inversé Droit & Coude Gauche", stance: "Gunun Sogi", details: "Avancer vers F." },
+                            { num: 13, action: "Coup de Pied Circulaire Droit", stance: "Appui Unilatéral", details: "Frappe vers DF." },
+                            { num: 14, action: "Coup de Pied Retourné Talon Droit", stance: "Saut 360°", details: "Frappe vers F." },
+                            { num: 15, action: "Blocage Moyen Garde Avant-bras Gauche", stance: "Niunja Sogi", details: "Réception vers E." },
+                            { num: 16, action: "Coup de Pied Circulaire Gauche", stance: "Appui Unilatéral", details: "Frappe vers DE." },
+                            { num: 17, action: "Attaque en U-Shape", stance: "Gojung Sogi", details: "Pivoter vers C." },
+                            { num: 18, action: "Coup de Pied Sauté Rotatif 360°", stance: "Saut Aérien", details: "Rotation complète vers C." },
+                            { num: 19, action: "Blocage Moyen Garde Tranchant Gauche", stance: "Niunja Sogi", details: "Réception vers C." },
+                            { num: 20, action: "Attaque Dos de Poing Droit & Blocage Bas Gauche", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 21, action: "Attaque Doigts Piquants Droit", stance: "Gunun Sogi", details: "Avancer vers C." },
+                            { num: 22, action: "Double Blocage Avant-bras Moyen", stance: "Gunun Sogi", details: "Pivoter vers B." },
+                            { num: 23, action: "Attaque Dos de Poing Gauche", stance: "Annun Sogi", details: "Pivoter vers C." },
+                            { num: 24, action: "Coup de Pied Latéral Gauche Perçant", stance: "Appui Unilatéral", details: "Frappe vers A." },
+                            { num: 25, action: "Coup de Pied Latéral Droit Perçant", stance: "Appui Unilatéral", details: "Frappe rapide vers A." },
+                            { num: 26, action: "Blocage Croisé Poing en X", stance: "Niunja Sogi", details: "Réception vers B." },
+                            { num: 27, action: "Double Blocage Paume Montant", stance: "Gunun Sogi", details: "Avancer vers B." },
+                            { num: 28, action: "Blocage Montant Avant-bras Droit", stance: "Gunun Sogi", details: "Avancer vers A." },
+                            { num: 29, action: "Coup de Poing Moyen Gauche", stance: "Gunun Sogi", details: "Attaque tragique à gauche." },
+                            { num: 30, action: "Position de Garde Finale", stance: "Parallel Stance", details: "Fermeture." }
+                        ]
+                    },
+                    { id: 12, name: "Kwang-Gae", grade: "1er Dan", movements: 39, diagram: "H", readyStance: "Parallel Ready Stance with a Heaven Hand", meaning: "Nommé d'après le roi Kwang-Gae-Toh-Wang.", techniques: [{ num: 1, action: "39 Mouvements amples officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 13, name: "Po-Eun", grade: "1er Dan", movements: 36, diagram: "—", readyStance: "Parallel Stance with a Heaven Hand", meaning: "Pseudonyme du loyal sujet Chong Mong-Chu.", techniques: [{ num: 1, action: "36 Mouvements horizontaux officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 14, name: "Ge-Baek", grade: "1er Dan", movements: 44, diagram: "+", readyStance: "Parallel Ready Stance", meaning: "Nommé d'après le général Ge-Baek de la dynastie Baek Je.", techniques: [{ num: 1, action: "44 Mouvements d'impact officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 15, name: "Eui-Am", grade: "2e Dan", movements: 45, diagram: "+", readyStance: "Close Ready Stance D", meaning: "Pseudonyme de Son Byong Hi, leader du mouvement du 1er mars 1919.", techniques: [{ num: 1, action: "45 Mouvements d'indépendance officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 16, name: "Choong-Jang", grade: "2e Dan", movements: 52, diagram: "+", readyStance: "Sitting Stance toward D", meaning: "Pseudonyme du Général Kim Duk Ryang.", techniques: [{ num: 1, action: "52 Mouvements synchronisés officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 17, name: "Juche", grade: "2e Dan", movements: 45, diagram: "Mont Baekdu", readyStance: "Close Ready Stance C with a Twin Side Elbow", meaning: "Philosophie de maîtrise de soi sur le Mont Baekdu.", techniques: [{ num: 1, action: "45 Mouvements acrobatiques officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 18, name: "Sam-Il", grade: "3e Dan", movements: 33, diagram: "+", readyStance: "Close Ready Stance C", meaning: "Commémore les 33 patriotes du mouvement de 1919.", techniques: [{ num: 1, action: "33 Mouvements de puissance officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 19, name: "Yoo-Sin", grade: "3e Dan", movements: 68, diagram: "⌃", readyStance: "Warrior Ready Stance B", meaning: "Nommé d'après le Général Kim Yoo Sin.", techniques: [{ num: 1, action: "68 Mouvements d'endurance officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 20, name: "Choi-Yong", grade: "3e Dan", movements: 46, diagram: "+", readyStance: "Close Ready Stance C", meaning: "Nommé d'après le Général Choi Yong.", techniques: [{ num: 1, action: "46 Mouvements d'élite officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 21, name: "Yon-Gae", grade: "4e Dan", movements: 49, diagram: "+", readyStance: "Warrior Ready Stance A", meaning: "Nommé d'après le général Yon Gae Somoon.", techniques: [{ num: 1, action: "49 Mouvements de combat officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 22, name: "Ul-Ji", grade: "4e Dan", movements: 42, diagram: "—", readyStance: "Parallel Stance with an X-Back Hand", meaning: "Nommé d'après le Général Ul-Ji Moon Dok.", techniques: [{ num: 1, action: "42 Mouvements tactiques officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 23, name: "Moon-Moo", grade: "5e Dan", movements: 61, diagram: "+", readyStance: "Parallel Ready Stance", meaning: "Honore le 30e roi de la dynastie Silla.", techniques: [{ num: 1, action: "61 Mouvements royaux officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 24, name: "So-San", grade: "5e Dan", movements: 72, diagram: "+", readyStance: "Close Ready Stance A", meaning: "Pseudonyme du moine Choi Hyong Ung (72 mouvements).", techniques: [{ num: 1, action: "72 Mouvements supérieurs officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 25, name: "Se-Jong", grade: "6e Dan", movements: 24, diagram: "I", readyStance: "Close Ready Stance B", meaning: "Nommé d'après le roi Se-Jong (24 lettres de l'alphabet coréen).", techniques: [{ num: 1, action: "24 Mouvements maîtres officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] },
+                    { id: 26, name: "Tong-Il", grade: "6e Dan", movements: 56, diagram: "I", readyStance: "Parallel Stance with an Overlapped Back Hand", meaning: "Symbolise la réunification ultime de la Corée.", techniques: [{ num: 1, action: "56 Mouvements ultimes officiels", stance: "Dan Stance", details: "Fiche complète disponible." }] }
+                ],
+
+                postures: [
+                    { name: "Posture de Marche", korean: "Gunun Sogi", description: "Posture courante d'attaque/défense. Jambe arrière tendue à 60%, avant fléchie à 40%.", weight: "60% arrière / 40% avant", dimensions: "Largeur d'épaules / Longueur 1.5" },
+                    { name: "Posture L (en L)", korean: "Niunja Sogi", description: "Posture de garde et contre. Poids majoritairement sur la jambe arrière.", weight: "70% arrière / 30% avant", dimensions: "Longueur 1.5 largeur d'épaules" },
+                    { name: "Posture Assise", korean: "Annun Sogi", description: "Posture très stable de face ou profil.", weight: "50% / 50%", dimensions: "Largeur 1.5 largeur d'épaules" },
+                    { name: "Posture Pied Arrière", korean: "Dwit Bal Sogi", description: "Posture légère de contre-attaque.", weight: "90% arrière / 10% avant", dimensions: "Longueur 1 pied" }
+                ],
+
+                vitesses: [
+                    { title: "Mouvement Normal", korean: "Botong", badge: "NORM", description: "Vitesse standard d'un mouvement, synchronisée avec l'expiration et le Sine Wave.", example: "Coups de poing basiques." },
+                    { title: "Mouvement Lent", korean: "Chon-Choni", badge: "LENT", description: "Exécution ralentie pour développer le contrôle et la concentration.", example: "Début de Hwa-Rang." },
+                    { title: "Mouvement Rapide", korean: "Pallun", badge: "RAP", description: "Enchaînement vif de deux mouvements sans temps mort.", example: "Double frappe." },
+                    { title: "Mouvement Continu", korean: "I-Sok", badge: "CONT", description: "Deux mouvements liés en un seul souffle continu.", example: "Bloc bas puis poing." }
+                ],
+
+                techniquesMains: [
+                    { name: "Coup de Poing", korean: "Jirugi", desc: "Frappe directe avec les deux premiers knuckles du poing.", target: "Plexus, visage" },
+                    { name: "Tranchant de la Main", korean: "Sonkal", desc: "Frappe/blocage avec le bord extérieur de la main.", target: "Cou, tempes" },
+                    { name: "Avant-Bras Intérieur", korean: "An Palmok", desc: "Outil principal pour les blocages circulaires.", target: "Attaques moyennes" }
+                ],
+
+                techniquesPieds: [
+                    { name: "Coup de Pied Avant", korean: "Ap Cha Busigi", desc: "Frappe snap frontale avec la pelote du pied.", tool: "Pelote du pied" },
+                    { name: "Coup de Pied Latéral", korean: "Yapcha Jirugi", desc: "Frappe perçante sur le côté, armement genou haut.", tool: "Tranchant du pied" },
+                    { name: "Coup de Pied Circulaire", korean: "Dollyo Chagi", desc: "Frappe circulaire avec le cou-de-pied ou la pelote.", tool: "Cou-de-pied / Pelote" }
+                ],
+
+                biomecanique: [
+                    { id: "01", title: "L'Onde Sinusoïdale (Sine Wave)", content: "Mouvement vertical du centre de gravité créé par la flexion/extension des genoux pour maximiser la masse corporelle au moment de l'impact." },
+                    { id: "02", title: "Lignes de Pas & Déplacements", content: "Les déplacements (Omgyo Didigi) s'effectuent selon des lignes géométriques précises (droite, incurvée, zigzag)." },
+                    { id: "03", title: "Méthodes de Pivotement (Dolgi)", content: "Le pivot s'effectue strictement sur la plante du pied (ball of the foot) pour préserver un équilibre instantané." }
+                ],
+
+                theoriePuissance: [
+                    { id: 1, title: "Réaction de Force", content: "Utilisation du bras opposé pour multiplier l'impulsion cinétique." },
+                    { id: 2, title: "Concentration", content: "Focalisation de la force sur la plus petite surface d'impact." },
+                    { id: 3, title: "Équilibration", content: "Maintien d'un équilibre parfait pendant et après la frappe." },
+                    { id: 4, title: "Respiration", content: "Expiration sèche au moment de l'impact pour verrouiller la sangle abdominale." },
+                    { id: 5, title: "Masse Corporelle", content: "Exploitation du poids du corps transféré grâce au Sine Wave." },
+                    { id: 6, title: "Vitesse", content: "Accélération maximale au moment de l'impact." }
+                ],
+
+                get filteredTuls() {
+                    return this.tuls.filter(t => {
+                        let match = t.name.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
+                                    t.meaning.toLowerCase().includes(this.searchQuery.toLowerCase());
+                        if (this.tulFilter === 'gup') return match && (t.grade.includes('Gup') || t.grade.includes('Pratique'));
+                        if (this.tulFilter === 'dan') return match && t.grade.includes('Dan');
+                        return match;
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
